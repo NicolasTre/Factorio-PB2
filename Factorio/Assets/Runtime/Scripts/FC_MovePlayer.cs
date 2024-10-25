@@ -8,13 +8,10 @@ namespace Controller
         [SerializeField] private float _moveSpeed;
         private Rigidbody2D _rb;
         private Vector2 _moveInput;
-        Camera _camera;
-
 
         public void Start()
         {
             _rb = GetComponent<Rigidbody2D>();
-            _camera = GetComponentInChildren<Camera>();
         }
 
         public void Update()
