@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,13 +7,13 @@ namespace Controller
     internal class FC_MovePlayer : MonoBehaviour
     {
         [SerializeField] private float _moveSpeed;
-        [SerializeField] private Camera _mainCamera;
+        [SerializeField] private CinemachineVirtualCamera _mainCinemachineCamera;
 
-        private float _zoom;
+        [Range(7f,70f)] private float _zoom;
         private float _zoomMultiplier = 50f;  
-        private float _maxZoom = 70f;
-        private float _minZoom = 7f;
         private float _velocityCam = 0f;
+        private float _minZoom = 7f;
+        private float _maxZoom = 70f;
         private float _smoothTimeZoom = 0.17f;
         private Rigidbody2D _rb;
         private Vector2 _moveInput;
@@ -20,7 +21,7 @@ namespace Controller
         public void Start()
         {
             _rb = GetComponent<Rigidbody2D>();
-            _mainCamera.orthographicSize = 10f;
+            _mainCinemachineCamera.m_Lens.OrthographicSize = 10f;
         }
 
         public void Update()
@@ -38,7 +39,7 @@ namespace Controller
            float _scroll = context.ReadValue<float>();
             _zoom -= _scroll * _zoomMultiplier;
             _zoom = Mathf.Clamp(_zoom, _minZoom, _maxZoom);
-            _mainCamera.orthographicSize = Mathf.SmoothDamp(_mainCamera.orthographicSize, _zoom, ref _velocityCam, _smoothTimeZoom);
+            _mainCinemachineCamera.m_Lens.OrthographicSize = Mathf.SmoothDamp(_mainCinemachineCamera.m_Lens.OrthographicSize, _zoom, ref _velocityCam, _smoothTimeZoom);
         }
     }
 }
