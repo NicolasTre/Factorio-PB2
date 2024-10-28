@@ -34,13 +34,11 @@ namespace Test
                 beltItem.currentLerp += (_speed * Time.deltaTime) / distance;
 
                 if (beltItem.currentLerp >= 1)
-                {
                     if (beltItem.endPoint + 1 < _lineRenderer.positionCount)
                     {
                         beltItem.currentLerp = 0;
                         beltItem.endPoint++;
                     }
-                }
             }
         }
     }
