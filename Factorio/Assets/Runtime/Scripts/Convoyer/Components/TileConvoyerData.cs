@@ -2,7 +2,6 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[GenerateAuthoringComponent]
 public struct TileConvoyerData
 {
     public static int animationFrame = 0;

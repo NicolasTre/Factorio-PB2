@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class ConvoyerSimulation : MonoBehaviour
 {
-    public GameObject? tilePrefab; // Préfab pour le convoyeur
+    public GameObject tilePrefab; // Préfab pour le convoyeur
     public Tilemap mainTilemap;
     public Tilemap tempTilemap;
     private EntityManager entityManager;
