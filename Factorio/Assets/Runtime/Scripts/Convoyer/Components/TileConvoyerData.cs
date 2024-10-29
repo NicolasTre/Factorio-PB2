@@ -9,7 +9,7 @@ public struct TileConvoyerData
     public DIRECTION direction;
     public Vector3Int position;
     
-    public Tile[] spriteList;
+    public Tile[] tileAnimList;
 }
 
 public enum DIRECTION

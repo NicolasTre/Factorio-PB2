@@ -2004,9 +2004,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4a9be19f091a649b75be2e4a68ede2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 0}
   mainTilemap: {fileID: 0}
   tempTilemap: {fileID: 0}
+  tileAnimList_Test:
+  - {fileID: 11400000, guid: 9ae8d906e27003c44bf211af85cddb18, type: 2}
+  - {fileID: 11400000, guid: f64bc5a6217c779478076f5c89970fca, type: 2}
+  - {fileID: 11400000, guid: 05e3e922a76ff9c42aa6a4febf521283, type: 2}
 --- !u!1 &1580602222
 GameObject:
   m_ObjectHideFlags: 0
