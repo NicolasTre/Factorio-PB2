@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d67c01e58e9e04f8f57e346ff44140, type: 3}
   m_Name: Tomate
   m_EditorClassIdentifier: 
-  title: Tomate
-  description: Tomate
-  Icon: {fileID: 4060682636331337571, guid: 1b39c0fe73f0433468e25eb21cfde7c2, type: 3}
-  amount: 0
+  title: Viande
+  description: "Viande utilis\xE9 pour les burgers "
+  icon: {fileID: 4060682636331337571, guid: 1b39c0fe73f0433468e25eb21cfde7c2, type: 3}
+  amount: 3
   isStackable: 0
   type: 0
