@@ -1,27 +1,47 @@
-using Unity.Entities;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class ConvoyerSimulation : MonoBehaviour
 {
-    public Tilemap mainTilemap;
-    public Tilemap tempTilemap;
-    public Tile[] tileAnimList_Test;
-
-    private EntityManager entityManager;
+    private Tilemap mainTilemap;
+    private Tilemap tempTilemap;
 
     private Vector3Int lastTilePosition;
+    
+    [SerializeField] private float animationSpeed = 1f;
+    private float timeAccumulator = 0f;
 
+    [SerializeField] private Tile[] tileAnimUp;
+    [SerializeField] private Tile[] tileAnimDown;
+    [SerializeField] private Tile[] tileAnimLeft;
+    [SerializeField] private Tile[] tileAnimRight;
+
+    private Dictionary<DIRECTION, Tile[]> tilesByDirection;
+    private Dictionary<Vector3Int, DIRECTION> placedTiles           = new();
+    private Dictionary<DIRECTION, int> animationFramesByDirection   = new();
+
+    [SerializeField] private DIRECTION currentDirection = DIRECTION.Up;
 
     private void Awake()
     {
         mainTilemap = GameObject.Find("MainTilemap").GetComponent<Tilemap>();
         tempTilemap = GameObject.Find("TempTilemap").GetComponent<Tilemap>();
-    }
 
-    private void Start()
-    {
-        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        tilesByDirection = new Dictionary<DIRECTION, Tile[]>
+        {
+            { DIRECTION.Up, tileAnimUp },
+            { DIRECTION.Down, tileAnimDown },
+            { DIRECTION.Left, tileAnimLeft },
+            { DIRECTION.Right, tileAnimRight }
+        };
+
+        foreach (var direction in tilesByDirection.Keys)
+        {
+            animationFramesByDirection[direction] = 0;
+        }
     }
 
     private void Update()
@@ -29,54 +49,110 @@ public class ConvoyerSimulation : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
 
-        UpdateConvoyerPosition(mousePosition, tileAnimList_Test);
+        
+        UpdateConvoyerPosition(mousePosition, tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]]);
+
 
         if (Input.GetMouseButtonDown(0))
         {
-            PlaceConvoyer(mousePosition, tileAnimList_Test);
+            PlaceConvoyer(mousePosition, tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]]);
         }
 
-        TileConvoyerData.animationFrame++;
+        UpdateFrameAnimation();
         UpdateConvoyerAnimation();
+
+        CheckButtonButtonsPressed();
     }
 
-    private void UpdateConvoyerPosition(Vector3 position, Tile tileAnim)
+    private void CheckButtonButtonsPressed()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ChangeDirection();
+            Debug.Log($"Direction changée en: {currentDirection}");
+        }
+    }
+
+    private void ChangeDirection()
+    {
+        currentDirection = (DIRECTION)(((int)currentDirection + 1) % System.Enum.GetValues(typeof(DIRECTION)).Length);
+       
+        if (tilesByDirection[currentDirection].Length == 0)
+        {
+            ChangeDirection();
+        }
+    }
+
+    private void UpdateFrameAnimation()
+    {
+        timeAccumulator += Time.deltaTime;
+
+        if (timeAccumulator < 1f / animationSpeed)
+        {
+            return;
+        }
+
+        foreach (var direction in tilesByDirection.Keys)
+        {
+            if (tilesByDirection[direction].Length > 0)
+            {
+                int frameCount = tilesByDirection[direction].Length;
+                animationFramesByDirection[direction] = (animationFramesByDirection[direction] + 1) % frameCount;
+            }
+        }
+
+        timeAccumulator = 0f;
+    }
+
+    private void UpdateConvoyerPosition(Vector3 position, Tile tile)
     {
         Vector3Int tilePosition = tempTilemap.WorldToCell(position);
 
-        if (tilePosition != lastTilePosition)
+        ReplaceLastTile(tilePosition);
+
+        if (!tilesByDirection.ContainsKey(currentDirection))
         {
-            tempTilemap.SetTile(lastTilePosition, null);
-            lastTilePosition = tilePosition;
+            return;
         }
 
-        tempTilemap.SetTile(tilePosition, tileAnim);
+        Tile currentTile = tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]];
+        tempTilemap.SetTile(tilePosition, currentTile);
+        //Debug.Log($"Grid Position: {tilePosition}");
+    }
 
-        Debug.Log($"Grid Position: {tilePosition}");
+    private void ReplaceLastTile(Vector3Int tilePosition)
+    {
+        if (tilePosition == lastTilePosition)
+        {
+            return;
+        }
+
+        tempTilemap.SetTile(lastTilePosition, null);
+        lastTilePosition = tilePosition;
     }
 
     private void UpdateConvoyerPosition(Vector3 position, Tile[] tileAnim)
     {
-        Vector3Int tilePosition = tempTilemap.WorldToCell(position);
-
-        if (tilePosition != lastTilePosition)
+        if (!tilesByDirection.ContainsKey(currentDirection))
         {
-            tempTilemap.SetTile(lastTilePosition, null);
-            lastTilePosition = tilePosition;
+            ChangeDirection();
+            return;
         }
 
-        int frameIndex = TileConvoyerData.animationFrame % tileAnim.Length;
-        tempTilemap.SetTile(tilePosition, tileAnim[frameIndex]);
-
-        Debug.Log($"Grid Position: {tilePosition}");
+        UpdateConvoyerPosition(position, tileAnim[animationFramesByDirection[currentDirection]]);
     }
 
 
     private void PlaceConvoyer(Vector3 position, Tile tile)
     {
-        Vector3Int tilePosition = mainTilemap.WorldToCell(position);
+        if (!tilesByDirection.ContainsKey(currentDirection))
+        {
+            Debug.LogWarning("Aucune animation trouvée pour cette direction.");
+        }
 
+        Vector3Int tilePosition = mainTilemap.WorldToCell(position);
         Tile currentTile = mainTilemap.GetTile<Tile>(tilePosition);
+
         if (currentTile != null && currentTile == tile)
         {
             Debug.Log("Le même tile est déjà placé ici.");
@@ -84,51 +160,32 @@ public class ConvoyerSimulation : MonoBehaviour
         }
 
         mainTilemap.SetTile(tilePosition, tile);
-
-        Entity convoyerEntity = entityManager.CreateEntity(typeof(TileConvoyerData));
+        placedTiles[tilePosition] = currentDirection;
     }
 
     private void PlaceConvoyer(Vector3 position, Tile[] tileAnim)
-    {
-        Vector3Int tilePosition = mainTilemap.WorldToCell(position);
+    {        
+        Tile currentTile = tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]];
+        PlaceConvoyer(position, currentTile);
 
-        Tile currentTile = mainTilemap.GetTile<Tile>(tilePosition);
-        if (currentTile != null)
-        {
-            foreach (Tile tile in tileAnim)
-            {
-                if (currentTile == tile)
-                {
-                    Debug.Log("L'un des tiles de l'animation est déjà placé ici.");
-                    return;
-                }
-            }
-        }
-
-        if (tileAnim != null && tileAnim.Length > 0)
-        {
-            // Assure que l'index ne dépasse pas la taille du tableau
-            int frameIndex = TileConvoyerData.animationFrame % tileAnim.Length;
-            mainTilemap.SetTile(tilePosition, tileAnim[frameIndex]);
-        }
-        else
-            Debug.LogWarning("Le tableau de tiles est vide ou nul.");
-
-        Entity convoyerEntity = entityManager.CreateEntity(typeof(TileConvoyerData));
     }
 
     private void UpdateConvoyerAnimation()
     {
-        if (tileAnimList_Test != null && tileAnimList_Test.Length > 0)
+        if (!tilesByDirection.TryGetValue(currentDirection, out Tile[] tiles))
         {
-            foreach (var position in mainTilemap.cellBounds.allPositionsWithin)
+            return;
+        }
+
+        foreach (var position in placedTiles.Keys)
+        {
+            DIRECTION placedDirection = placedTiles[position];
+            Tile[] tileArray = tilesByDirection[placedDirection];
+
+            if (tileArray.Length > 0)
             {
-                Tile currentTile = mainTilemap.GetTile<Tile>(position);
-                if (currentTile != null)
-                {
-                    int frameIndex = TileConvoyerData.animationFrame % tileAnimList_Test.Length;
-                    mainTilemap.SetTile(position, tileAnimList_Test[frameIndex]);
-                }
+                int frameIndex = animationFramesByDirection[placedDirection] % tileArray.Length;
+                mainTilemap.SetTile(position, tileArray[frameIndex]);
             }
         }
     }

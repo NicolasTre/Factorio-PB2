@@ -53,7 +53,7 @@ public class FC_BuildingSystem : MonoBehaviour
 
     private bool InRange(Vector3Int PositionA, Vector3Int PositionB, Vector3Int Range)
     {
-        Debug.Log($"In Range Result : {Mathf.Abs(PositionA.x - PositionB.x) <= Range.x || Mathf.Abs(PositionA.y - PositionB.y) <= Range.y}");
+        //Debug.Log($"In Range Result : {Mathf.Abs(PositionA.x - PositionB.x) <= Range.x || Mathf.Abs(PositionA.y - PositionB.y) <= Range.y}");
 
         return Mathf.Abs(PositionA.x - PositionB.x) <= Range.x || Mathf.Abs(PositionA.y - PositionB.y) <= Range.y;
     }
