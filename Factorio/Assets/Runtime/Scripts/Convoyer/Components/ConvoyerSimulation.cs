@@ -14,10 +14,29 @@ public class ConvoyerSimulation : MonoBehaviour
     [SerializeField] private float animationSpeed = 1f;
     private float timeAccumulator = 0f;
 
+    #region Tile Animations
+    [Header("Natural Animations")]
     [SerializeField] private Tile[] tileAnimUp;
     [SerializeField] private Tile[] tileAnimDown;
     [SerializeField] private Tile[] tileAnimLeft;
     [SerializeField] private Tile[] tileAnimRight;
+
+    [Header("- Up Animations")]
+    [SerializeField] private Tile[] tileAnimUpRight;
+    [SerializeField] private Tile[] tileAnimUpLeft;
+
+    [Header("- Down Animations")]
+    [SerializeField] private Tile[] tileAnimDownRight;
+    [SerializeField] private Tile[] tileAnimDownLeft;
+    
+    [Header("- Right Animations")]
+    [SerializeField] private Tile[] tileAnimRightUp;
+    [SerializeField] private Tile[] tileAnimRightDown;
+
+    [Header("- Left Animations")]
+    [SerializeField] private Tile[] tileAnimLeftUp;
+    [SerializeField] private Tile[] tileAnimLeftDown;
+    #endregion
 
     private Dictionary<DIRECTION, Tile[]> tilesByDirection;
     private Dictionary<Vector3Int, DIRECTION> placedTiles           = new();
@@ -35,7 +54,19 @@ public class ConvoyerSimulation : MonoBehaviour
             { DIRECTION.Up, tileAnimUp },
             { DIRECTION.Down, tileAnimDown },
             { DIRECTION.Left, tileAnimLeft },
-            { DIRECTION.Right, tileAnimRight }
+            { DIRECTION.Right, tileAnimRight },
+
+            { DIRECTION.UpRight, tileAnimUpRight },
+            { DIRECTION.UpLeft, tileAnimUpLeft },
+
+            { DIRECTION.DownRight, tileAnimDownRight },
+            { DIRECTION.DownLeft, tileAnimDownLeft },
+
+            { DIRECTION.RightUp, tileAnimRightUp },
+            { DIRECTION.RightDown, tileAnimRightDown },
+
+            { DIRECTION.LeftUp, tileAnimLeftUp },
+            { DIRECTION.LeftDown, tileAnimLeftDown }
         };
 
         foreach (var direction in tilesByDirection.Keys)

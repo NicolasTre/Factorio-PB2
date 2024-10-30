@@ -13,10 +13,22 @@ public struct TileConvoyerData
 
 public enum DIRECTION
 {
-    Up,  
+    Up,
     Down,
     Left,
-    Right
+    Right,
+
+    UpRight,
+    UpLeft,
+
+    DownRight,
+    DownLeft,
+
+    RightUp,
+    RightDown,
+    
+    LeftUp,
+    LeftDown
 }
 
 
