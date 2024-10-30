@@ -1,17 +1,20 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Movement
+namespace Controller
 {
     internal class FC_MovePlayer : MonoBehaviour
     {
         [SerializeField] private float _moveSpeed;
         private Rigidbody2D _rb;
         private Vector2 _moveInput;
+        Camera _camera;
+
 
         public void Start()
         {
             _rb = GetComponent<Rigidbody2D>();
+            _camera = GetComponentInChildren<Camera>();
         }
 
         public void Update()
@@ -23,7 +26,6 @@ namespace Movement
         {
             _moveInput = context.ReadValue<Vector2>();
         }
-
     }
 }
 
