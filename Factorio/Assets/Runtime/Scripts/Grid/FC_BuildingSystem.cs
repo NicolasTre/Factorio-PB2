@@ -61,11 +61,11 @@ public class FC_BuildingSystem : MonoBehaviour
     private bool CheckCondition(FC_RuleTileWithData tile, FC_Item currentItem)
     {
         if (currentItem.itemType == FC_ItemType.BuildingBlock)
-            if(!tile)
+            if (!tile)
                 return false;
-        else if (currentItem.itemType == FC_ItemType.Tool)
-            if (tile)
-                    if(tile.item.actionType == currentItem.actionType)
+            else if (currentItem.itemType == FC_ItemType.Tool)
+                if (tile)
+                    if (tile.item.actionType == currentItem.actionType)
                         return true;
         return false;
     }
