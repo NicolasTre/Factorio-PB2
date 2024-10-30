@@ -6,13 +6,6 @@ using UnityEngine.UIElements;
 
 public class ConvoyerSimulation : MonoBehaviour
 {
-    private Tilemap mainTilemap;
-    private Tilemap tempTilemap;
-
-    private Vector3Int lastTilePosition;
-    
-    [SerializeField] private float animationSpeed = 1f;
-    private float timeAccumulator = 0f;
 
     #region Tile Animations
     [Header("Natural Animations")]
@@ -37,18 +30,30 @@ public class ConvoyerSimulation : MonoBehaviour
     [SerializeField] private Tile[] tileAnimLeftUp;
     [SerializeField] private Tile[] tileAnimLeftDown;
     #endregion
+    #region Parameters
+    [Space(30)]
+    [Header("Parameters")]
 
+    [SerializeField] private float animationSpeed = 1f;
+    [SerializeField] private DIRECTION currentDirection = DIRECTION.Right;
+    [SerializeField] private Color highlightColor = Color.green;
+    
+    private Tilemap mainTilemap;
+    private Tilemap tempTilemap;
+
+    private Vector3Int lastTilePosition;
+    
+    private float timeAccumulator = 0f;
     private Dictionary<DIRECTION, Tile[]> tilesByDirection;
     private Dictionary<Vector3Int, DIRECTION> placedTiles           = new();
     private Dictionary<DIRECTION, int> animationFramesByDirection   = new();
-
-    [SerializeField] private DIRECTION currentDirection = DIRECTION.Up;
+    #endregion
 
     private void Awake()
     {
         mainTilemap = GameObject.Find("MainTilemap").GetComponent<Tilemap>();
         tempTilemap = GameObject.Find("TempTilemap").GetComponent<Tilemap>();
-
+        
         tilesByDirection = new Dictionary<DIRECTION, Tile[]>
         {
             { DIRECTION.Up, tileAnimUp },
@@ -113,7 +118,8 @@ public class ConvoyerSimulation : MonoBehaviour
             ChangeDirection();
         }
     }
-
+    
+    #region Update
     private void UpdateFrameAnimation()
     {
         timeAccumulator += Time.deltaTime;
@@ -137,29 +143,20 @@ public class ConvoyerSimulation : MonoBehaviour
 
     private void UpdateConvoyerPosition(Vector3 position, Tile tile)
     {
-        Vector3Int tilePosition = tempTilemap.WorldToCell(position);
-
-        ReplaceLastTile(tilePosition);
-
         if (!tilesByDirection.ContainsKey(currentDirection))
         {
             return;
         }
 
+        Vector3Int tilePosition = tempTilemap.WorldToCell(position);
+
+
+        HighlightTile(tilePosition);
+        ReplaceLastTile(tilePosition);
+
         Tile currentTile = tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]];
         tempTilemap.SetTile(tilePosition, currentTile);
-        //Debug.Log($"Grid Position: {tilePosition}");
-    }
-
-    private void ReplaceLastTile(Vector3Int tilePosition)
-    {
-        if (tilePosition == lastTilePosition)
-        {
-            return;
-        }
-
-        tempTilemap.SetTile(lastTilePosition, null);
-        lastTilePosition = tilePosition;
+        Debug.Log($"Grid Position: {tilePosition}");
     }
 
     private void UpdateConvoyerPosition(Vector3 position, Tile[] tileAnim)
@@ -173,41 +170,8 @@ public class ConvoyerSimulation : MonoBehaviour
         UpdateConvoyerPosition(position, tileAnim[animationFramesByDirection[currentDirection]]);
     }
 
-
-    private void PlaceConvoyer(Vector3 position, Tile tile)
-    {
-        if (!tilesByDirection.ContainsKey(currentDirection))
-        {
-            Debug.LogWarning("Aucune animation trouvée pour cette direction.");
-        }
-
-        Vector3Int tilePosition = mainTilemap.WorldToCell(position);
-        Tile currentTile = mainTilemap.GetTile<Tile>(tilePosition);
-
-        if (currentTile != null && currentTile == tile)
-        {
-            Debug.Log("Le même tile est déjà placé ici.");
-            return;
-        }
-
-        mainTilemap.SetTile(tilePosition, tile);
-        placedTiles[tilePosition] = currentDirection;
-    }
-
-    private void PlaceConvoyer(Vector3 position, Tile[] tileAnim)
-    {        
-        Tile currentTile = tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]];
-        PlaceConvoyer(position, currentTile);
-
-    }
-
     private void UpdateConvoyerAnimation()
     {
-        if (!tilesByDirection.TryGetValue(currentDirection, out Tile[] tiles))
-        {
-            return;
-        }
-
         foreach (var position in placedTiles.Keys)
         {
             DIRECTION placedDirection = placedTiles[position];
@@ -220,4 +184,57 @@ public class ConvoyerSimulation : MonoBehaviour
             }
         }
     }
+    #endregion
+    
+    #region Placing
+    private void ReplaceLastTile(Vector3Int tilePosition)
+    {
+        if (tilePosition == lastTilePosition)
+        {
+            return;
+        }
+
+        Debug.Log($"Grid LastPosition: {lastTilePosition}");
+        tempTilemap.SetTile(lastTilePosition, null);
+        lastTilePosition = tilePosition;
+    }
+
+    private void PlaceConvoyer(Vector3 position, Tile tile)
+    {
+
+        Vector3Int tilePosition = mainTilemap.WorldToCell(position);
+        Tile currentTile = mainTilemap.GetTile<Tile>(tilePosition);
+
+        if (currentTile != null && currentTile == tile)
+        {
+            Debug.Log("Le même tile est déjà placé ici.");
+            return;
+        }
+
+        ResetTileColor(tilePosition);
+        mainTilemap.SetTile(tilePosition, tile);
+        
+        placedTiles[tilePosition] = currentDirection;
+    }
+
+    private void PlaceConvoyer(Vector3 position, Tile[] tileAnim)
+    {        
+        Tile currentTile = tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]];
+        PlaceConvoyer(position, currentTile);
+
+    }
+    #endregion
+
+    #region Colorimetrie
+    private void HighlightTile(Vector3Int position)
+    {
+        tempTilemap.SetTileFlags(position, TileFlags.None); // Permet la modification de la couleur
+        tempTilemap.SetColor(position, highlightColor);
+    }
+
+    private void ResetTileColor(Vector3Int position)
+    {
+        tempTilemap.SetColor(position, Color.white); //couleur d'origine
+    }
+    #endregion
 }

@@ -1628,7 +1628,7 @@ Tilemap:
       - {fileID: 21300000, guid: f69cd1f13e42e144d87f30c204e6d88d, type: 3}
       - {fileID: 21300000, guid: 168df50bfcc95504eb42ea8d890572b6, type: 3}
       - {fileID: 21300000, guid: c348b8e9a9334124385c697dff98c9c6, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -2004,16 +2004,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4a9be19f091a649b75be2e4a68ede2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationSpeed: 6
   tileAnimUp:
   - {fileID: 11400000, guid: e2d2f14482ca71d4988421de71dcb9bd, type: 2}
-  tileAnimDown: []
+  - {fileID: 11400000, guid: 9ae8d906e27003c44bf211af85cddb18, type: 2}
+  tileAnimDown:
+  - {fileID: 11400000, guid: e2d2f14482ca71d4988421de71dcb9bd, type: 2}
   tileAnimLeft: []
   tileAnimRight:
   - {fileID: 11400000, guid: 9ae8d906e27003c44bf211af85cddb18, type: 2}
   - {fileID: 11400000, guid: f64bc5a6217c779478076f5c89970fca, type: 2}
   - {fileID: 11400000, guid: 05e3e922a76ff9c42aa6a4febf521283, type: 2}
+  tileAnimUpRight: []
+  tileAnimUpLeft: []
+  tileAnimDownRight: []
+  tileAnimDownLeft: []
+  tileAnimRightUp: []
+  tileAnimRightDown: []
+  tileAnimLeftUp: []
+  tileAnimLeftDown: []
+  animationSpeed: 10
   currentDirection: 3
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1580602222
 GameObject:
   m_ObjectHideFlags: 0
@@ -2133,7 +2144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 433c8436249642b40b6e64d257b210cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 12
+  _moveSpeed: 46
 --- !u!50 &1807045871
 Rigidbody2D:
   serializedVersion: 5
@@ -2303,7 +2314,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807045869}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c837fff168af3041ad1de58ea4010e0, type: 3}
   m_Name: 
