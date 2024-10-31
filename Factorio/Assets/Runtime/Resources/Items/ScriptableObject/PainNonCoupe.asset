@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01bde20677cbf347af12324d30facf6, type: 3}
+  m_Name: PainNonCoupe
+  m_EditorClassIdentifier: 
+  _title: PainNonCoupe
+  _description: "Item Pain non coup\xE9 pour les sandwichs"
+  _icon: {fileID: -2923436030622703960, guid: 10ac15eedc252e1429479804787982a6, type: 3}
+  _quantities: 1
+  _isStackable: 1
+  type: 4

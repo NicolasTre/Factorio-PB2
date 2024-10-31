@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a1e790102ba1943a1b97aab14cada3, type: 3}
+  m_Name: TomateNonCoupe
+  m_EditorClassIdentifier: 
+  _title: TomateNonCoupe
+  _description: "Item Tomate non Coup\xE9 pour les sandwichs"
+  _icon: {fileID: -7657457043945749134, guid: 91f3c2408f5e7794d8658297de1e0150, type: 3}
+  _quantities: 5
+  _isStackable: 1
+  type: 0

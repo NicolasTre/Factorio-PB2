@@ -1,21 +1,33 @@
-using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "item", menuName = "ScriptableObject/Item", order = 1)]
-public class FC_ItemSo : ScriptableObject
+[System.Serializable]
+public enum Type
 {
-    public string title; 
-    public string description;
-    public Sprite icon;
-    public int amount;
-    public bool isStackable;
+    PainHautCoupeCuit,
+    PainBasCoupeCuit,
+    PainHautCoupeNonCuit,
+    PainBasCoupeNonCuit,
+    PainNonCoupe,
+    ViandeNonCuite,
+    ViandeCuite,
+    TomateCoupe,
+    TomateNonCoupe
+}
 
-    [System.Serializable]
-    public enum Type
-    {
-        Tomate, Pain, Viande
-    }
-
+[CreateAssetMenu(fileName = "Vierge", menuName = "Items/Vierge")]
+public class FC_ItemSo : ScriptableObject, FC_Iitem
+{
+    [SerializeField] protected string _title;
+    [SerializeField] protected string _description;
+    [SerializeField] protected Sprite _icon;
+    [SerializeField] protected int _quantities;
+    [SerializeField] protected bool _isStackable;
     public Type type;
 
+
+    public string title { get => _title; set => _title = value; }
+    public string description { get => _description; set => _description = value; }
+    public Sprite icon { get => _icon; set => _icon = value; }
+    public int quantities { get => _quantities; set => _quantities = value; }
+    public bool isStackable { get => _isStackable; set => _isStackable = value; }
 }
