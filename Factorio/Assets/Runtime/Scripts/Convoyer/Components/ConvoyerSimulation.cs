@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class ConvoyerSimulation : MonoBehaviour
 {
@@ -47,6 +45,7 @@ public class ConvoyerSimulation : MonoBehaviour
     private Dictionary<DIRECTION, Tile[]> tilesByDirection;
     private Dictionary<Vector3Int, DIRECTION> placedTiles           = new();
     private Dictionary<DIRECTION, int> animationFramesByDirection   = new();
+    private Dictionary<DIRECTION, Vector3Int> directionOffsets      = new();
     #endregion
 
     private void Awake()
@@ -72,6 +71,26 @@ public class ConvoyerSimulation : MonoBehaviour
 
             { DIRECTION.LeftUp, tileAnimLeftUp },
             { DIRECTION.LeftDown, tileAnimLeftDown }
+        };
+
+        directionOffsets = new Dictionary<DIRECTION, Vector3Int>
+        {
+            { DIRECTION.Up, Vector3Int.up },
+            { DIRECTION.Down, Vector3Int.down },
+            { DIRECTION.Left, Vector3Int.left },
+            { DIRECTION.Right, Vector3Int.right },
+
+            { DIRECTION.UpRight, Vector3Int.right },
+            { DIRECTION.UpLeft, Vector3Int.left },
+
+            { DIRECTION.DownRight, Vector3Int.right },
+            { DIRECTION.DownLeft, Vector3Int.left },
+
+            { DIRECTION.RightUp, Vector3Int.up },
+            { DIRECTION.RightDown, Vector3Int.down },
+
+            { DIRECTION.LeftUp, Vector3Int.up },
+            { DIRECTION.LeftDown, Vector3Int.down }
         };
 
         foreach (var direction in tilesByDirection.Keys)
@@ -118,7 +137,17 @@ public class ConvoyerSimulation : MonoBehaviour
             ChangeDirection();
         }
     }
-    
+
+    private Vector3Int GetNeighborTilePosition(Vector3Int currentTilePosition, DIRECTION direction)
+    {
+        if (directionOffsets.TryGetValue(direction, out Vector3Int offset))
+        {
+            return currentTilePosition + offset;
+        }
+        return currentTilePosition;
+    }
+
+
     #region Update
     private void UpdateFrameAnimation()
     {
@@ -149,7 +178,11 @@ public class ConvoyerSimulation : MonoBehaviour
         }
 
         Vector3Int tilePosition = tempTilemap.WorldToCell(position);
-
+        
+        ///
+        Vector3Int neighborTilePosition = GetNeighborTilePosition(tilePosition, currentDirection);
+        Debug.Log($"Position de la tuile voisine: {neighborTilePosition}");
+        ///
 
         HighlightTile(tilePosition);
         ReplaceLastTile(tilePosition);
