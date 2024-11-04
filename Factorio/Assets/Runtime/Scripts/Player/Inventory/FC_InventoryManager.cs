@@ -77,6 +77,8 @@ public class FC_InventoryManager : MonoBehaviour
 
     public void ChargeItem(int i)
     {
+        if (slot == null) { return; }
+
         _holderDescription.SetActive(true);
         _Title.text = inventory[i].title;
         _descriptionObject.text = inventory[i].description;

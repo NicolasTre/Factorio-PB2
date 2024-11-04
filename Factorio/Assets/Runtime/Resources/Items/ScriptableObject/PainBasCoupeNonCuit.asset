@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _title: PainBasCoupeNonCuit
   _description: "Item Pain bas coup\xE9 non cuit pour les sandwichs"
-  _icon: {fileID: 2232903662559748692, guid: c1ac7710edaf5b5469bde35ea1cc4f25, type: 3}
-  _quantities: 36
+  _icon: {fileID: 21300000, guid: c1ac7710edaf5b5469bde35ea1cc4f25, type: 3}
+  _quantities: 5405554
   _isStackable: 1
   type: 3

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _title: TomateCoupe
   _description: "Item Tomate Coup\xE9 pour les sandwichs"
-  _icon: {fileID: -5632227879982173058, guid: 7a2139f4ef399764bb01e706d445314a, type: 3}
-  _quantities: 2
+  _icon: {fileID: 21300000, guid: 7a2139f4ef399764bb01e706d445314a, type: 3}
+  _quantities: 333947
   _isStackable: 1
   type: 7
