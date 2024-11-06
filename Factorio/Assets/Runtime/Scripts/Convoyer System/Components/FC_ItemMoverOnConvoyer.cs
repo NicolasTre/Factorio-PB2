@@ -62,7 +62,6 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
             isMoving = true;
         }*/
 
-
         if (isMoving)
         {
             MoveItem();
@@ -76,36 +75,58 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
 
     private void CheckIfOnConvoyer()
     {
-        Collider2D tileHit = Physics2D.OverlapCircle(transform.position, collider.radius);
-
-        if (!tileHit.gameObject.CompareTag(convoyerTag.ToString()))
-        {
-            Debug.Log("ENCORE UN TRUC DE MERDE   1");
-            return;
-        }
-        //recupere la position toucher en vector3int de la grid dans une variable
-
-         Debug.Log("TRUC Touche");
-
         currentTilePos = convoyerSystem.convoyerTilemap.WorldToCell(transform.position);
-        Debug.Log("Position de la cellule touchée: " + currentTilePos);
+        //Debug.Log("Position de la cellule touchée: " + currentTilePos);
 
-        targetPosition = convoyerSystem.convoyerTilemap.CellToWorld(currentTilePos) + offsetToPutItInTheMiddleCaseByTileMap;
-        transform.position = targetPosition; // Centrer l'objet immédiatement
+        if (!convoyerSystem.IsTileAvailable(currentTilePos)) { return; }
+
+        ChangeTargetPosition(convoyerSystem.convoyerTilemap.CellToWorld(currentTilePos));
+        CenterItem();
 
         DIRECTION currentDirection = convoyerSystem.GetCurrentDirectionAt(currentTilePos);
         Vector3Int nextTilePos = convoyerSystem.GetNeighborTilePosition(currentTilePos, currentDirection);
-        
-        if (convoyerSystem.IsTileAvailable(nextTilePos))
-        {
-            Debug.Log("ENCORE UN TRUC DE MERDE   2");
-            return;
-        }
-        targetPosition = convoyerSystem.convoyerTilemap.CellToWorld(nextTilePos) + offsetToPutItInTheMiddleCaseByTileMap;
-        
-        Debug.Log("Movement Enable");
+
+
+        if (!convoyerSystem.IsTileAvailable(nextTilePos)) { return; }
+
+        if (HasOppositeDirection(currentDirection, convoyerSystem.placedTiles[nextTilePos])) { return; }
+
+        ChangeTargetPosition(convoyerSystem.convoyerTilemap.CellToWorld(nextTilePos));
+
+        //Debug.Log("Movement Enable");
         timer = 0f;
         isMoving = true;
+    }
+
+    private void ChangeTargetPosition(Vector3 newTarget)
+    {
+        targetPosition = newTarget + offsetToPutItInTheMiddleCaseByTileMap;
+    }
+
+    private bool HasOppositeDirection(DIRECTION dir1, DIRECTION dir2)
+    {
+        if (!convoyerSystem.directionOffsets.TryGetValue(dir1, out Vector3Int vectorDir1))
+        {
+            return false;
+        }
+
+        if (!convoyerSystem.directionOffsets.TryGetValue(dir2, out Vector3Int vectorDir2))
+        {
+            return false;
+        }
+
+        if (vectorDir1 != -vectorDir2)
+        {
+            return false;
+        }
+
+        //Debug.Log("Has Opposite Direction by the next tile");
+        return true;
+    }
+
+    private void CenterItem()
+    {
+        transform.position = targetPosition; // Centrer l'objet immédiatement
     }
 
     private void MoveItem()

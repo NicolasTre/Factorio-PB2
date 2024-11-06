@@ -44,9 +44,9 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     
     private float timeAccumulator = 0f;
     private Dictionary<DIRECTION, Tile[]> tilesByDirection;
-    private Dictionary<Vector3Int, DIRECTION> placedTiles           = new();
+    public Dictionary<Vector3Int, DIRECTION> placedTiles { get; private set; }
     public  Dictionary<DIRECTION, int> animationFramesByDirection   = new();
-    private Dictionary<DIRECTION, Vector3Int> directionOffsets      = new();
+    public Dictionary<DIRECTION, Vector3Int> directionOffsets { get; private set; }
     #endregion
 
     private void Awake()
@@ -73,7 +73,9 @@ public class FC_TileConvoyerSystem : MonoBehaviour
             { DIRECTION.LeftUp, tileAnimLeftUp },
             { DIRECTION.LeftDown, tileAnimLeftDown }
         };
-
+        
+        placedTiles = new();
+        
         directionOffsets = new Dictionary<DIRECTION, Vector3Int>
         {
             { DIRECTION.Up, Vector3Int.up },
@@ -128,7 +130,7 @@ public class FC_TileConvoyerSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             ChangeDirection();
-            Debug.Log($"Direction changée en: {currentDirection}");
+            //Debug.Log($"Direction changée en: {currentDirection}");
         }
     }
 
@@ -165,7 +167,10 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     public bool IsTileAvailable(Vector3Int tilePosition)
     {
         Tile tile = convoyerTilemap.GetTile<Tile>(tilePosition);
-        return tile == null;
+        
+        return tile != null;
+
+//        return tile == null;
     }
     #endregion
 

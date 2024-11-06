@@ -1334,7 +1334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   convoyerSystem: {fileID: 1532073895}
-  durationTravelling: 1
+  durationTravelling: 1.65
   convoyerTag: 1
 --- !u!114 &275147950
 MonoBehaviour:
@@ -1384,7 +1384,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.3
+  m_Radius: 0.5
 --- !u!212 &275147952
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3048,7 +3048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   convoyerSystem: {fileID: 1532073895}
-  durationTravelling: 1
+  durationTravelling: 1.65
   convoyerTag: 1
 --- !u!114 &528114633
 MonoBehaviour:
@@ -3098,7 +3098,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.3
+  m_Radius: 0.5
 --- !u!212 &528114635
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3595,7 +3595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   convoyerSystem: {fileID: 1532073895}
-  durationTravelling: 1
+  durationTravelling: 1.65
   convoyerTag: 1
 --- !u!58 &607353225
 CircleCollider2D:
@@ -3604,7 +3604,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 607353218}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -3854,8 +3854,6 @@ GameObject:
   - component: {fileID: 679455864}
   - component: {fileID: 679455868}
   - component: {fileID: 679455867}
-  - component: {fileID: 679455866}
-  - component: {fileID: 679455865}
   m_Layer: 0
   m_Name: ConvoyerTilemap
   m_TagString: Convoyer
@@ -3878,71 +3876,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1465604668}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &679455865
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 679455863}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!19719996 &679455866
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 679455863}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
-  m_UseDelaunayMesh: 0
 --- !u!483693784 &679455867
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -4704,7 +4637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   convoyerSystem: {fileID: 1532073895}
-  durationTravelling: 1
+  durationTravelling: 1.65
   convoyerTag: 1
 --- !u!114 &806946194
 MonoBehaviour:
@@ -4754,7 +4687,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.3
+  m_Radius: 0.5
 --- !u!212 &806946196
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5499,7 +5432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   convoyerSystem: {fileID: 1532073895}
-  durationTravelling: 1
+  durationTravelling: 1.65
   convoyerTag: 1
 --- !u!114 &932832970
 MonoBehaviour:
@@ -5549,7 +5482,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.3
+  m_Radius: 0.5
 --- !u!212 &932832972
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11781,7 +11714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   convoyerSystem: {fileID: 1532073895}
-  durationTravelling: 1
+  durationTravelling: 1.65
   convoyerTag: 1
 --- !u!114 &2091985937
 MonoBehaviour:
@@ -11831,7 +11764,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.3
+  m_Radius: 0.5
 --- !u!212 &2091985939
 SpriteRenderer:
   m_ObjectHideFlags: 0
