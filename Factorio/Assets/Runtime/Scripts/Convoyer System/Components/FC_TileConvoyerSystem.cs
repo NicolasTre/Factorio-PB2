@@ -43,7 +43,7 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     private Vector3Int lastTilePosition;
     
     private float timeAccumulator = 0f;
-    private Dictionary<DIRECTION, Tile[]> tilesByDirection;
+    public Dictionary<DIRECTION, Tile[]> tilesByDirection { get; private set; }
     public Dictionary<Vector3Int, DIRECTION> placedTiles { get; private set; }
     public  Dictionary<DIRECTION, int> animationFramesByDirection   = new();
     public Dictionary<DIRECTION, Vector3Int> directionOffsets { get; private set; }

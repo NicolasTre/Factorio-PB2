@@ -7,7 +7,11 @@ public enum TagRef
     Convoyer
 }
 
-public class FC_ItemMoverOnConvoyer : MonoBehaviour
+public interface FC_IItemTest
+{
+}
+
+public class FC_ItemMoverOnConvoyer : MonoBehaviour, FC_IItemTest
 {
     public FC_TileConvoyerSystem convoyerSystem;
     
@@ -91,6 +95,8 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
 
         if (HasOppositeDirection(currentDirection, convoyerSystem.placedTiles[nextTilePos])) { return; }
 
+        if (HasAnotherItemInTheNextTile(nextTilePos)) { return; }
+
         ChangeTargetPosition(convoyerSystem.convoyerTilemap.CellToWorld(nextTilePos));
 
         //Debug.Log("Movement Enable");
@@ -123,6 +129,36 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
         //Debug.Log("Has Opposite Direction by the next tile");
         return true;
     }
+    private bool HasAnotherItemInTheNextTile(Vector3Int nextTilePos) 
+    {
+        FC_IItemTest itemAtNextPosition = GetItemAtPosition<FC_IItemTest>(nextTilePos); // Get all the surrounding GameObject
+
+
+        if (itemAtNextPosition != null && transform.position == nextTilePos)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private T GetItemAtPosition<T>(Vector3Int tilePos) where T : FC_IItemTest
+    {
+        // On récupère la tile à la position donnée, et on vérifie si elle contient un objet du type T
+        TileBase tile = convoyerSystem.convoyerTilemap.GetTile(tilePos);
+
+        // Si la tile est vide ou ne contient pas d'objet du type FC_IItemTest, on retourne null
+        if (tile == null)
+        {
+            return default(T);
+        }
+
+        // Si la tile n'est pas vide et qu'on peut obtenir le composant FC_IItemTest, on le retourne
+
+        Debug.Log($"il y a un object de type {tile.GetComponent<T>()}");
+        return tile.GetComponent<T>();
+    }
+
 
     private void CenterItem()
     {
