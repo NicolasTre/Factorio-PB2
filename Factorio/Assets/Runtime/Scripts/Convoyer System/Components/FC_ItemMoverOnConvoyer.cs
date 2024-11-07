@@ -7,11 +7,7 @@ public enum TagRef
     Convoyer
 }
 
-public interface FC_IItemTest
-{
-}
-
-public class FC_ItemMoverOnConvoyer : MonoBehaviour, FC_IItemTest
+public class FC_ItemMoverOnConvoyer : MonoBehaviour
 {
     public FC_TileConvoyerSystem convoyerSystem;
     
@@ -85,11 +81,10 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour, FC_IItemTest
         if (!convoyerSystem.IsTileAvailable(currentTilePos)) { return; }
 
         ChangeTargetPosition(convoyerSystem.convoyerTilemap.CellToWorld(currentTilePos));
-        CenterItem();
+        CenterItemOnTarget();
 
         DIRECTION currentDirection = convoyerSystem.GetCurrentDirectionAt(currentTilePos);
         Vector3Int nextTilePos = convoyerSystem.GetNeighborTilePosition(currentTilePos, currentDirection);
-
 
         if (!convoyerSystem.IsTileAvailable(nextTilePos)) { return; }
 
@@ -130,11 +125,10 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour, FC_IItemTest
         return true;
     }
     private bool HasAnotherItemInTheNextTile(Vector3Int nextTilePos) 
-    {
-        FC_IItemTest itemAtNextPosition = GetItemAtPosition<FC_IItemTest>(nextTilePos); // Get all the surrounding GameObject
+    {       
+        FC_ItemData itemAtNextPosition = GetItemAtTile<FC_ItemData>(nextTilePos);
 
-
-        if (itemAtNextPosition != null && transform.position == nextTilePos)
+        if (itemAtNextPosition == null)
         {
             return false;
         }
@@ -142,25 +136,26 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour, FC_IItemTest
         return true;
     }
 
-    private T GetItemAtPosition<T>(Vector3Int tilePos) where T : FC_IItemTest
+    private T GetItemAtTile<T>(Vector3Int tilePos) where T : FC_ItemData
     {
-        // On récupère la tile à la position donnée, et on vérifie si elle contient un objet du type T
-        TileBase tile = convoyerSystem.convoyerTilemap.GetTile(tilePos);
-
-        // Si la tile est vide ou ne contient pas d'objet du type FC_IItemTest, on retourne null
-        if (tile == null)
+        // Convertir la position de la tuile en coordonnées du monde pour la comparaison
+        Vector3 worldPosition = convoyerSystem.convoyerTilemap.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0);
+        
+        // Rechercher tous les objets de type FC_Item dans la scène
+        FC_ItemData[] itemFound = FindObjectsOfType<FC_ItemData>();
+        foreach (var item in itemFound)
         {
-            return default(T);
+            // Vérifier si l'objet est du type T et si sa position correspond à celle de la tuile
+            if (Vector3.Distance(item.transform.position, worldPosition) <= collider.radius)
+            {
+                return item as T;
+            }
         }
 
-        // Si la tile n'est pas vide et qu'on peut obtenir le composant FC_IItemTest, on le retourne
-
-        Debug.Log($"il y a un object de type {tile.GetComponent<T>()}");
-        return tile.GetComponent<T>();
+        return null;
     }
 
-
-    private void CenterItem()
+    private void CenterItemOnTarget()
     {
         transform.position = targetPosition; // Centrer l'objet immédiatement
     }
