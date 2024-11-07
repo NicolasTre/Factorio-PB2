@@ -13,7 +13,7 @@ public class FC_InventoryManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _Title, _descriptionObject;
     [SerializeField] private Image _iconDescription;
 
-    public List<FC_ItemSo> inventory;
+    public List<FC_Iitem> inventory = new();
 
     private GameObject slot;
     private int _inventoryLenght = 63;
@@ -28,54 +28,57 @@ public class FC_InventoryManager : MonoBehaviour
 
     public void InventoryOpen(InputAction.CallbackContext context) // function for open inventory and create a slot and set item to slot
     {
-        context.ReadValue<float>();
-
-        if (!_inventoryPanel.activeInHierarchy)
+        if (context.performed)
         {
-            _inventoryPanel.SetActive(true);
-
-            if (_holderSlot.transform.childCount > 0)
+            if (!_inventoryPanel.activeInHierarchy)
             {
-                foreach (Transform item in _holderSlot.transform)
+                _inventoryPanel.SetActive(true);
+
+                if (_holderSlot.transform.childCount > 0)
                 {
-                    Destroy(item.gameObject);
+                    foreach (Transform item in _holderSlot.transform)
+                    {
+                        Destroy(item.gameObject);
+                    }
+                }
+
+                for (int i = 0; i < _inventoryLenght; i++)
+                {
+                    if (i <= inventory.Count - 1)
+                    {
+                        slot = Instantiate(_prefabs, transform.position, transform.rotation);
+                        slot.transform.SetParent(_holderSlot.transform);
+
+                        TextMeshProUGUI amount = slot.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
+                        Image img = slot.transform.Find("Icon").GetComponent<Image>();
+
+                        slot.GetComponent<FC_SlotItem>().itemSlot = i;
+
+                        amount.text = inventory[i].quantities.ToString();
+                        img.sprite = inventory[i].icon;
+                    }
+                    else
+                    {
+                        slot = Instantiate(_prefabs, transform.position, transform.rotation);
+                        slot.transform.SetParent(_holderSlot.transform);
+                        slot.GetComponent<FC_SlotItem>().itemSlot = i;
+
+                        TextMeshProUGUI amount = slot.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
+                        amount.gameObject.SetActive(false);
+                    }
                 }
             }
-
-            for (int i = 0; i < _inventoryLenght; i++)
+            else if (_inventoryPanel.activeInHierarchy)
             {
-                if (i <= inventory.Count - 1)
-                {
-                    slot = Instantiate(_prefabs, transform.position, transform.rotation);
-                    slot.transform.SetParent(_holderSlot.transform);
-
-                    TextMeshProUGUI amount = slot.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
-                    Image img = slot.transform.Find("Icon").GetComponent<Image>();
-
-                    slot.GetComponent<FC_SlotItem>().itemSlot = i;
-
-                    amount.text = inventory[i].amount.ToString();
-                    img.sprite = inventory[i].icon;
-                }
-                else if (i > inventory.Count - 1)
-                {
-                    slot = Instantiate(_prefabs, transform.position, transform.rotation);
-                    slot.transform.SetParent(_holderSlot.transform);
-                    slot.GetComponent<FC_SlotItem>().itemSlot = i;
-
-                    TextMeshProUGUI amount = slot.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
-                    amount.gameObject.SetActive(false);
-                }
+                _inventoryPanel.SetActive(false);
             }
-        }
-        else if (_inventoryPanel.activeInHierarchy) 
-        {
-            _inventoryPanel.SetActive(false);
         }
     }
 
     public void ChargeItem(int i)
     {
+        if (slot == null) { return; }
+
         _holderDescription.SetActive(true);
         _Title.text = inventory[i].title;
         _descriptionObject.text = inventory[i].description;
