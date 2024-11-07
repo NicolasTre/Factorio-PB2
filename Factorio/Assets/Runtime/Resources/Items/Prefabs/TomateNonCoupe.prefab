@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 2113982941828518983}
   - component: {fileID: 8300914065929682457}
   - component: {fileID: 5490554392285066572}
-  - component: {fileID: 5323692049138604645}
   - component: {fileID: 3776200519359969096}
+  - component: {fileID: 5619234526877909476}
+  - component: {fileID: 3032536315175334282}
   m_Layer: 0
   m_Name: TomateNonCoupe
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2876120650947131069}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.47, y: 2.42, z: 0.045540314}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -117,8 +118,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &5323692049138604645
-BoxCollider2D:
+--- !u!114 &3776200519359969096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2876120650947131069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1622f880990cca7409b84933943ead3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemName: 8
+--- !u!58 &5619234526877909476
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -152,18 +166,8 @@ BoxCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &3776200519359969096
+  m_Radius: 0.5
+--- !u!114 &3032536315175334282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,7 +176,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2876120650947131069}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1622f880990cca7409b84933943ead3c, type: 3}
+  m_Script: {fileID: 11500000, guid: e3726f8c196826b4c884c54bcaa8ee3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemName: 8
+  _title: 
+  _description: 
+  _icon: {fileID: 0}
+  _quantities: 0
+  _maxAmount: 0
+  _isStackable: 0
+  type: 0

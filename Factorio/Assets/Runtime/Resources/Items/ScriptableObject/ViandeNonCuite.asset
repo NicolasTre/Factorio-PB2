@@ -15,6 +15,7 @@ MonoBehaviour:
   _title: Viande
   _description: Item Viande non cuite pour les sandwichs
   _icon: {fileID: 21300000, guid: e720750ecf074c849b435f438c4f6b1a, type: 3}
-  _quantities: 1360994
+  _quantities: 1
+  _maxAmount: 50
   _isStackable: 1
   type: 5

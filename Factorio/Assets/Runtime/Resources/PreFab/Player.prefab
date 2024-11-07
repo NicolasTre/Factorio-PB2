@@ -120,7 +120,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8212505500600776751}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 240668954187579640}
+        m_TargetAssemblyTypeName: FC_InventoryManager, Assembly-CSharp
+        m_MethodName: PlusButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &589121896162378995
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +193,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 50
   m_TargetDisplay: 0
 --- !u!114 &5176452375441930053
 MonoBehaviour:
@@ -1411,7 +1423,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1842,7 +1854,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7889979599160152941}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 240668954187579640}
+        m_TargetAssemblyTypeName: FC_InventoryManager, Assembly-CSharp
+        m_MethodName: MinusButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6570378743059256468
 GameObject:
   m_ObjectHideFlags: 0
@@ -1994,7 +2018,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2319939445622416792
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2407,10 +2431,15 @@ MonoBehaviour:
   _inventoryPanel: {fileID: 2605102218303319604}
   _holderSlot: {fileID: 5776133391284515395}
   _prefabs: {fileID: 452899297181661178, guid: 26ca31e15d07916478175fe8355ac73d, type: 3}
-  _holderDescription: {fileID: 2156259473793265162}
   _Title: {fileID: 9113637655209100182}
   _descriptionObject: {fileID: 2931230297961279215}
   _iconDescription: {fileID: 1477795520092435015}
+  _holderDescription: {fileID: 2156259473793265162}
+  _valueToUse: {fileID: 993399391921868748}
+  _plusButton: {fileID: 1096350378374823800}
+  _minusButton: {fileID: 3485533152153813429}
+  _useButton: {fileID: 3988092620070111942}
+  _removeButton: {fileID: 3345686955754964467}
 --- !u!1 &8095423255700006891
 GameObject:
   m_ObjectHideFlags: 0

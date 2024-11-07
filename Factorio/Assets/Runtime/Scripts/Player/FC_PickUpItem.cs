@@ -17,10 +17,7 @@ public class FC_PickUpItem : MonoBehaviour
                 {
                     item.quantities += FC_InventoryManager.instance.inventory[i].quantities;
                     FC_InventoryManager.instance.inventory.Remove(FC_InventoryManager.instance.inventory[i]);
-                }
-                else
-                {
-                    item.quantities += FC_InventoryManager.instance.inventory[i].quantities;
+                    break;
                 }
             }
 

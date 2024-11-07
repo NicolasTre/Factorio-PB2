@@ -15,6 +15,7 @@ MonoBehaviour:
   _title: ViandeCuite
   _description: Item Viande Cuite pour les sandwichs
   _icon: {fileID: 21300000, guid: 936cbb021e2dad24fbde567caf096c89, type: 3}
-  _quantities: 2695838
+  _quantities: 1
+  _maxAmount: 50
   _isStackable: 1
   type: 6
