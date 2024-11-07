@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "GameObject/Item")]
-public class FC_Item : ScriptableObject
+public class FC_ItemV1 : ScriptableObject
 {
     public TileBase      tile;
     public Sprite        spriteTile;

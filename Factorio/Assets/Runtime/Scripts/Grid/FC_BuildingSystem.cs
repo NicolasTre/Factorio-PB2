@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class FC_BuildingSystem : MonoBehaviour
 {
-    [SerializeField] private FC_Item _item;
+   /* [SerializeField] private FC_ItemV1 _item;
 
     [SerializeField] private TileBase _highlightTile;
     [SerializeField] private Tilemap  _mainTilemap;
@@ -68,5 +68,5 @@ public class FC_BuildingSystem : MonoBehaviour
                     if (tile.item.actionType == currentItem.actionType)
                         return true;
         return false;
-    }
+    }*/
 }

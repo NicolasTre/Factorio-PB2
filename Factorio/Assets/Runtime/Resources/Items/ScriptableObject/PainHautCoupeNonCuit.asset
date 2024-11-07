@@ -15,6 +15,7 @@ MonoBehaviour:
   _title: PainHautCoupeNonCuit
   _description: "Item Pain non coup\xE9 pour les sandwichs"
   _icon: {fileID: 21300000, guid: ddc3c5c477a229841a89a10ecf50e211, type: 3}
-  _quantities: 10806543
+  _quantities: 1
+  _maxAmount: 50
   _isStackable: 1
   type: 2

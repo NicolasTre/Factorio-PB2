@@ -6,5 +6,6 @@ public interface FC_Iitem
     string description { get; set; }
     Sprite icon { get; set; }
     int quantities { get; set; }
+    int maxAmount { get; set; }
     bool isStackable { get; set; }
 }
