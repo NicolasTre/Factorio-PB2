@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class FC_TileConvoyerSystem : MonoBehaviour
 {
@@ -125,6 +126,7 @@ public class FC_TileConvoyerSystem : MonoBehaviour
         CheckButtonButtonsPressed();
     }
 
+    #region Actions
     private void CheckButtonButtonsPressed()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -143,6 +145,34 @@ public class FC_TileConvoyerSystem : MonoBehaviour
             ChangeDirection();
         }
     }
+
+    public void CreateTile(DIRECTION direction, Vector3 position)
+    {
+        Vector3Int tilePosition = convoyerTilemap.WorldToCell(position);
+        
+        if (convoyerTilemap.GetTile(tilePosition) != null)
+        {
+            Debug.LogWarning("Une tuile est déjà placée à cette position.");
+            return;
+        }
+
+        Tile[] tileArray = tilesByDirection[direction];
+        if (tileArray.Length == 0)
+        {
+            Debug.LogWarning("Aucune animation de tuile disponible pour cette direction.");
+            return;
+        }
+
+        // Sélectionne la tuile d'animation actuelle pour la direction
+        Tile currentTile = tileArray[animationFramesByDirection[direction] % tileArray.Length];
+
+        convoyerTilemap.SetTile(tilePosition, currentTile);
+
+        placedTiles[tilePosition] = direction;
+
+        Debug.Log($"Tuile créée à la position {tilePosition} avec la direction {direction}");
+    }
+    #endregion
 
     #region Getter
     public Vector3Int GetNeighborTilePosition(Vector3Int currentTilePosition, DIRECTION direction)

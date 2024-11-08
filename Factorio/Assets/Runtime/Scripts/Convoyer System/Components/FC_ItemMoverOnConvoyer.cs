@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -75,13 +76,14 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
 
     private void CheckIfOnConvoyer()
     {
-        currentTilePos = convoyerSystem.convoyerTilemap.WorldToCell(transform.position);
+        Tilemap tilemap = convoyerSystem.convoyerTilemap;
+        currentTilePos = tilemap.WorldToCell(transform.position);
         //Debug.Log("Position de la cellule touchée: " + currentTilePos);
 
         if (!convoyerSystem.IsTileAvailable(currentTilePos)) { return; }
 
-        ChangeTargetPosition(convoyerSystem.convoyerTilemap.CellToWorld(currentTilePos));
-        CenterItemOnTarget();
+        ChangeTargetPosition(tilemap.CellToWorld(currentTilePos));
+        CenterImmadiateItemOnTarget();
 
         DIRECTION currentDirection = convoyerSystem.GetCurrentDirectionAt(currentTilePos);
         Vector3Int nextTilePos = convoyerSystem.GetNeighborTilePosition(currentTilePos, currentDirection);
@@ -92,7 +94,7 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
 
         if (HasAnotherItemInTheNextTile(nextTilePos)) { return; }
 
-        ChangeTargetPosition(convoyerSystem.convoyerTilemap.CellToWorld(nextTilePos));
+        ChangeTargetPosition(tilemap.CellToWorld(nextTilePos));
 
         //Debug.Log("Movement Enable");
         timer = 0f;
@@ -116,6 +118,7 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
             return false;
         }
 
+        return vectorDir1 == -vectorDir2;
         if (vectorDir1 != -vectorDir2)
         {
             return false;
@@ -141,7 +144,6 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
         // Convertir la position de la tuile en coordonnées du monde pour la comparaison
         Vector3 worldPosition = convoyerSystem.convoyerTilemap.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0);
         
-        // Rechercher tous les objets de type FC_Item dans la scène
         FC_ItemData[] itemFound = FindObjectsOfType<FC_ItemData>();
         foreach (var item in itemFound)
         {
@@ -155,9 +157,9 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
         return null;
     }
 
-    private void CenterItemOnTarget()
+    private void CenterImmadiateItemOnTarget()
     {
-        transform.position = targetPosition; // Centrer l'objet immédiatement
+        transform.position = targetPosition;
     }
 
     private void MoveItem()
