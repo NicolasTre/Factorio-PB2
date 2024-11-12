@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
 
 public class FC_InventoryManager : MonoBehaviour
 {
@@ -18,8 +17,10 @@ public class FC_InventoryManager : MonoBehaviour
     private int _amountToUse;
     [SerializeField] private TextMeshProUGUI _valueToUse;
     [SerializeField] private Button _plusButton, _minusButton;
-    [SerializeField] private GameObject _useButton;
-    [SerializeField] private GameObject _removeButton;
+    [SerializeField] private Button _useButton;
+    [SerializeField] private Button _removeButton;
+
+    private FC_SlotItem _currentSelectedSlot;
 
 
     [HideInInspector] public GameObject slot;
@@ -31,6 +32,14 @@ public class FC_InventoryManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        _currentSelectedSlot = null;
+
+        _plusButton.onClick.AddListener(PlusButton);
+        _minusButton.onClick.AddListener(MinusButton);
+        _useButton.onClick.AddListener(UseItem);
+        _removeButton.onClick.AddListener(RemoveItem);
+
+
     }
 
     public void InventoryOpen(InputAction.CallbackContext context) 
@@ -52,7 +61,7 @@ public class FC_InventoryManager : MonoBehaviour
             {
                 foreach (Transform item in _holderSlot.transform)
                 {
-                    Destroy(item.gameObject);
+                    Destroy(item.gameObject);   
                 }
             }
 
@@ -60,25 +69,16 @@ public class FC_InventoryManager : MonoBehaviour
             {
                 if (i <= inventory.Count - 1)
                 {
-                    slot = Instantiate(_prefabs, transform.position, transform.rotation);
-                    slot.transform.SetParent(_holderSlot.transform);
-
-                    TextMeshProUGUI amount = slot.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
+                    SlotCreation(i);
+                    SetAmountText(true, i);
+                    
                     Image img = slot.transform.Find("Icon").GetComponent<Image>();
-
-                    slot.GetComponent<FC_SlotItem>().itemSlot = i;
-
-                    amount.text = inventory[i].quantities.ToString();
                     img.sprite = inventory[i].icon;
                 }
                 else if (i > inventory.Count - 1)
                 {
-                    slot = Instantiate(_prefabs, transform.position, transform.rotation);
-                    slot.transform.SetParent(_holderSlot.transform);
-                    slot.GetComponent<FC_SlotItem>().itemSlot = i;
-
-                    TextMeshProUGUI amount = slot.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
-                    amount.gameObject.SetActive(false);
+                    SlotCreation(i);
+                    SetAmountText(false);
                 }
             }
         }
@@ -88,99 +88,149 @@ public class FC_InventoryManager : MonoBehaviour
         }
     }
 
-    public void ChargeItem(int i)
+    private TextMeshProUGUI SetAmountText(bool value, int indexSlot = -1)
     {
-        if (i < 0 || i >= inventory.Count)
+        TextMeshProUGUI amount = slot.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
+
+        if (value && indexSlot != -1)
         {
-            Debug.LogWarning($"Index {i} est hors de la plage de l'inventaire. Taille actuelle : {inventory.Count}");
-            return;
+            amount.gameObject?.SetActive(value);
+            amount.text = inventory[indexSlot].quantities.ToString();
+        }
+        else
+        {
+            amount.gameObject.SetActive(false);
         }
 
-        if (inventory[i] == null)
-        {
-            return;
-        }
-
-        _amountToUse = 0;
-        _valueToUse.text = _amountToUse + "/" + inventory[i].maxAmount; 
-
-        _holderDescription.SetActive(true);
-        _Title.text = inventory[i].title;
-        _descriptionObject.text = inventory[i].description;
-        _iconDescription.sprite = inventory[i].icon;
-
-        _plusButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        _plusButton.GetComponent<Button>().onClick.AddListener(delegate { PlusButton(i);  });
-
-        _minusButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        _minusButton.GetComponent<Button>().onClick.AddListener(delegate { MinusButton(i);  });
-
-        _useButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        _useButton.GetComponent<Button>().onClick.AddListener(delegate { UseItem(i); });
-
-        _removeButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        _removeButton.GetComponent<Button>().onClick.AddListener(delegate { RemoveItem(i); });
-
-
+        return amount;
     }
 
-    public void UseItem(int i)
+    private void SlotCreation(int indexSlot)
+    {
+        slot = Instantiate(_prefabs, transform.position, transform.rotation, _holderSlot.transform);
+        FC_SlotItem slotItem = slot.GetComponent<FC_SlotItem>();
+        slotItem.itemSlot = indexSlot;
+        slotItem.RefreshGetComponent();
+    }
+
+    public FC_Iitem GetItem(FC_SlotItem slot) // permet de get l'item actuellement dans le slot sélectionner
+    {
+        if (slot == null)
+        {
+            return null;
+        }
+
+        Debug.Log(inventory[slot.itemSlot]);
+        return inventory[slot.itemSlot];
+    }
+
+    /// <summary>
+    ///chargeItem est appelé quand chargeItem de FC_SlotItem est appelé au clic du bouton de l'item ce qui charge la description de l'item
+    /// </summary>
+    /// <param name="newSlot"></param>
+
+    public void ChargeItem(FC_SlotItem newSlot)
+    {
+
+        if (newSlot == null) // si il n'y a pas de prefab
+        {
+            Debug.Log(newSlot);
+            return;
+        }
+
+        if (GetItem(newSlot) == null)//s'il n'y as pas d'item dans le slot
+        {
+            Debug.Log("ff");
+            return;
+        }
+
+        _currentSelectedSlot = newSlot; 
+        _amountToUse = 0;
+        RedefDescriptionItem(_currentSelectedSlot.itemSlot);
+    }
+
+    /// <summary>
+    /// Redéfinition de la description de l'item choisi dans l'inventaire en fonction de l'index de l'item.
+    /// </summary>
+    /// <param name="currentSlot"></param>
+    public void RedefDescriptionItem(int currentSlot)
+    {
+        _valueToUse.text = _amountToUse + "/" + inventory[currentSlot].maxAmount;
+
+        _holderDescription.SetActive(true);
+        _Title.text = inventory[currentSlot].title;
+        _descriptionObject.text = inventory[currentSlot].description;
+        _iconDescription.sprite = inventory[currentSlot].icon;
+    }
+
+    /// <summary>
+    ///Permet d'utiliser les items en fonction du nombre sélectionner dans l'inventaire
+    /// </summary>
+    public void UseItem()
+    {
+        RemoveItemWhenUse();
+        RefreshInventory();
+        _valueToUse.text = _amountToUse + "/" + GetItem(_currentSelectedSlot).maxAmount;
+    }
+
+    public void RemoveItemWhenUse()
     {
         for (int x = 0; x < _amountToUse; x++)
         {
-            if (inventory[i].quantities == 1)
+            if (GetItem(_currentSelectedSlot).quantities == 1)
             {
-                inventory.Remove(inventory[i]);
-                _holderDescription.SetActive(false);
-                _amountToUse = 0; 
+                DesactivateItemInventory();
                 break;
             }
             else
             {
-                inventory[i].quantities--;
+                GetItem(_currentSelectedSlot).quantities--;
             }
         }
-        RefreshInventory();
-        _valueToUse.text = _amountToUse + "/" + inventory[i].maxAmount;
     }
 
-    public void RemoveItem(int i)
+    public void DesactivateItemInventory()
+    {
+        inventory.Remove(GetItem(_currentSelectedSlot));
+        _holderDescription.SetActive(false);
+        _amountToUse = 0;
+    }
+
+    public void RemoveItem()
     {
         for (int x  = 0; x < _amountToUse; x++)
         {
-            if (inventory[i].quantities < 1)
+            if (GetItem(_currentSelectedSlot).quantities < 1)
             {
-                inventory.Remove(inventory[i]);
-                _holderDescription.SetActive(false);
+                DesactivateItemInventory();
                 Destroy(slot);
-                _amountToUse = 0;
                 break;
             }
             else
             {
-                inventory[i].quantities--;
+                GetItem(_currentSelectedSlot).quantities--;
             }
         }
         RefreshInventory();
-        _valueToUse.text = _amountToUse + "/" + inventory[i].maxAmount;
+        _valueToUse.text = _amountToUse + "/" + GetItem(_currentSelectedSlot).maxAmount;
     }
 
-    public void PlusButton(int i)
+    public void PlusButton()
     {
-        if (_amountToUse <= inventory[i].quantities - 1)
+        if (_amountToUse <= GetItem(_currentSelectedSlot).quantities - 1)
         {
             _amountToUse++;
-            _valueToUse.text = _amountToUse + "/" + inventory[i].maxAmount;
+            _valueToUse.text = _amountToUse + "/" + GetItem(_currentSelectedSlot).maxAmount;
         }
     }
 
-    public void MinusButton(int i)
+    public void MinusButton()
     {
         if (_amountToUse > 0)
         {
             _amountToUse--;
 
-            _valueToUse.text = _amountToUse + "/" + inventory[i].maxAmount;
+            _valueToUse.text = _amountToUse + "/" + GetItem(_currentSelectedSlot).maxAmount;
         }
     }
 }
