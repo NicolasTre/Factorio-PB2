@@ -9,8 +9,8 @@ namespace Controller
         [SerializeField] private float _moveSpeed;
         [SerializeField] private CinemachineVirtualCamera _mainCinemachineCamera;
 
-        [Range(7f,70f)] private float _zoom;
-        private float _zoomMultiplier = 50f;  
+        [SerializeField] [Range(7f,70f)] private float _zoom = 10f;
+        private float _zoomMultiplier = 2f;  
         private float _velocityCam = 0f;
         private float _minZoom = 7f;
         private float _maxZoom = 70f;
@@ -27,6 +27,7 @@ namespace Controller
         public void Update()
         {
             _rb.linearVelocity = _moveInput * _moveSpeed;
+            _mainCinemachineCamera.m_Lens.OrthographicSize = Mathf.SmoothDamp(_mainCinemachineCamera.m_Lens.OrthographicSize, _zoom, ref _velocityCam, _smoothTimeZoom);
         }
 
         public void MoveInGame(InputAction.CallbackContext context)
@@ -39,8 +40,6 @@ namespace Controller
            float _scroll = context.ReadValue<float>();
             _zoom -= _scroll * _zoomMultiplier;
             _zoom = Mathf.Clamp(_zoom, _minZoom, _maxZoom);
-            _mainCinemachineCamera.m_Lens.OrthographicSize = Mathf.SmoothDamp(_mainCinemachineCamera.m_Lens.OrthographicSize, _zoom, ref _velocityCam, _smoothTimeZoom);
         }
     }
 }
-
