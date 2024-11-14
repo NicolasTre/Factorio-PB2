@@ -6,12 +6,13 @@ public class FC_ZoneComputer : MonoBehaviour
 {
     [SerializeField] Animator anim;
     private BoxCollider2D zoneCollider;
-    private bool isOpen = false;
+    public bool isOpen { get; private set; }
 
 
     private void Awake()
     {
         zoneCollider = GetComponent<BoxCollider2D>();
+        isOpen = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
