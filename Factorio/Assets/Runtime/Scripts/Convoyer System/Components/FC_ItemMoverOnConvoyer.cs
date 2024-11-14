@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -8,7 +7,7 @@ public enum TagRef
     Convoyer
 }
 
-public class FC_ItemMoverOnConvoyer : MonoBehaviour
+public class FC_ItemMoverOnConvoyer : FC_ManagerItemOnConvoyer
 {
     public FC_TileConvoyerSystem convoyerSystem;
     
@@ -36,33 +35,8 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
         collider = GetComponent<CircleCollider2D>();
     }
 
-    private void Update()
+    protected override void UpdateItem()
     {
-/*        if (isMoving)
-        {
-            transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-            if (Vector3.Distance(transform.position, targetPosition) >= 0.01f)
-            {
-                return;
-            }
-            transform.position = targetPosition;
-            isMoving = false;
-        }
-        else
-        {
-            Vector3Int currentTilePos = convoyerSystem.mainTilemap.WorldToCell(transform.position);
-            DIRECTION currentDirection = convoyerSystem.GetCurrentDirectionAt(currentTilePos);
-            Vector3Int nextTilePos = convoyerSystem.GetNeighborTilePosition(currentTilePos, currentDirection);
-
-            if (!convoyerSystem.IsTileAvailable(nextTilePos))
-            {
-                return;
-            }
-            targetPosition = convoyerSystem.mainTilemap.CellToWorld(nextTilePos);
-            isMoving = true;
-        }*/
-
         if (isMoving)
         {
             MoveItem();
@@ -141,13 +115,11 @@ public class FC_ItemMoverOnConvoyer : MonoBehaviour
 
     private T GetItemAtTile<T>(Vector3Int tilePos) where T : FC_ItemData
     {
-        // Convertir la position de la tuile en coordonnées du monde pour la comparaison
         Vector3 worldPosition = convoyerSystem.convoyerTilemap.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0);
         
         FC_ItemData[] itemFound = FindObjectsOfType<FC_ItemData>();
         foreach (var item in itemFound)
         {
-            // Vérifier si l'objet est du type T et si sa position correspond à celle de la tuile
             if (Vector3.Distance(item.transform.position, worldPosition) <= collider.radius)
             {
                 return item as T;
