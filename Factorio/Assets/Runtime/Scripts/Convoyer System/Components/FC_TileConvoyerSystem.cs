@@ -31,8 +31,11 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     #endregion
 
     #region Parameters
+
+
     [Space(30)]
     [Header("Parameters")]
+    public bool canPlaceConvoyer;
 
     [SerializeField] private float animationSpeed = 1f;
     public DIRECTION currentDirection { get; private set; }
@@ -111,24 +114,23 @@ public class FC_TileConvoyerSystem : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
 
-        
+        UpdateFrameAnimation();
+        UpdateConvoyerAnimation();
+
+        if (!canPlaceConvoyer) return;
+
         UpdateConvoyerPosition(mousePosition, tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]]);
+        CheckButtonButtonsPressed(mousePosition);
+    }
 
-
+    #region Actions
+    private void CheckButtonButtonsPressed(Vector3 mousePosition)
+    {
         if (Input.GetMouseButtonDown(0))
         {
             PlaceConvoyer(mousePosition, tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]]);
         }
 
-        UpdateFrameAnimation();
-        UpdateConvoyerAnimation();
-
-        CheckButtonButtonsPressed();
-    }
-
-    #region Actions
-    private void CheckButtonButtonsPressed()
-    {
         if (Input.GetKeyDown(KeyCode.R))
         {
             ChangeDirection();
