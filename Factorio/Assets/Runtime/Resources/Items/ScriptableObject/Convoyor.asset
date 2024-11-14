@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08a1e790102ba1943a1b97aab14cada3, type: 3}
-  m_Name: TomateNonCoupe
+  m_Script: {fileID: 11500000, guid: 41729016d6c4d53439d011836cb00773, type: 3}
+  m_Name: Convoyor
   m_EditorClassIdentifier: 
-  _title: TomateNonCoupe
-  _description: "Item Tomate non Coup\xE9 pour les sandwichs"
-  _icon: {fileID: 21300000, guid: 91f3c2408f5e7794d8658297de1e0150, type: 3}
-  _quantities: 5
+  _title: Convoyor
+  _description: Item Convoyeur
+  _icon: {fileID: -4682107866839655084, guid: a23f4ee36342ca54992544ad04870a5d, type: 3}
+  _quantities: 1
   _maxAmount: 50
   _isStackable: 1
-  type: 9
+  type: 10

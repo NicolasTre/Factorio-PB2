@@ -13,6 +13,7 @@ public enum Type
     ViandeCuite,
     TomateCoupe,
     TomateNonCoupe,
+    Convoyor,
     ButtonMenu
 }
 

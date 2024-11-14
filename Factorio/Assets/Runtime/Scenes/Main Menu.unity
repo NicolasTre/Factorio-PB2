@@ -541,6 +541,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0f938a2509bc8b34097eb3e31f70eef9, type: 2}
   - {fileID: 11400000, guid: c699025745b21e745a9e03265d0abce6, type: 2}
   - {fileID: 11400000, guid: f6d8eef04fc8b1449824934af5bb5f3c, type: 2}
+  canPlaceConvoyer: 0
   animationSpeed: 10
   highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!114 &56713718
@@ -11420,7 +11421,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1947877761
 RectTransform:
   m_ObjectHideFlags: 0

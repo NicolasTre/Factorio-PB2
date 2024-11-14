@@ -11,6 +11,8 @@ public class FC_InventoryManager : MonoBehaviour
     [SerializeField] private GameObject _prefabs;
     [SerializeField] private TextMeshProUGUI _Title, _descriptionObject;
     [SerializeField] private Image _iconDescription;
+    [SerializeField] private FC_FurnaceRessource _furnaceRessource;
+
 
     [Header("Description")]
     [SerializeField] private GameObject _holderDescription;
@@ -28,6 +30,7 @@ public class FC_InventoryManager : MonoBehaviour
     
     public List<FC_Iitem> inventory = new();
     public static FC_InventoryManager instance;
+    
 
     private void Awake()
     {
@@ -119,8 +122,6 @@ public class FC_InventoryManager : MonoBehaviour
         {
             return null;
         }
-
-        Debug.Log(inventory[slot.itemSlot]);
         return inventory[slot.itemSlot];
     }
 
@@ -168,9 +169,14 @@ public class FC_InventoryManager : MonoBehaviour
     /// </summary>
     public void UseItem()
     {
-        RemoveItemWhenUse();
-        RefreshInventory();
-        _valueToUse.text = _amountToUse + "/" + GetItem(_currentSelectedSlot).maxAmount;
+        if (_amountToUse >= 1 && GetItem(_currentSelectedSlot).title == _furnaceRessource._nameToInputItemPrefab)
+        {
+            _furnaceRessource.AddInputItem(_amountToUse);
+            _furnaceRessource.StartProduction();
+            RemoveItemWhenUse();
+            RefreshInventory();
+            _valueToUse.text = _amountToUse + "/" + GetItem(_currentSelectedSlot).maxAmount;
+        }
     }
 
     public void RemoveItemWhenUse()

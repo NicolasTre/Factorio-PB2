@@ -18,4 +18,4 @@ MonoBehaviour:
   _quantities: 1
   _maxAmount: 50
   _isStackable: 1
-  type: 1
+  type: 2
