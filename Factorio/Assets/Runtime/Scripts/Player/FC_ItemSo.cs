@@ -12,7 +12,9 @@ public enum Type
     ViandeNonCuite,
     ViandeCuite,
     TomateCoupe,
-    TomateNonCoupe
+    TomateNonCoupe,
+    Convoyor,
+    ButtonMenu
 }
 
 [CreateAssetMenu(fileName = "Vierge", menuName = "Items/Vierge")]

@@ -3,7 +3,13 @@ using UnityEngine;
 public class FC_PickUpItem : MonoBehaviour
 {
     [SerializeField] private Type _itemName;
+    private FC_ItemData data;
     private readonly string PATHROOTITEMSO = "Items/ScriptableObject";
+
+    private void OnEnable()
+    {
+        data = GetComponent<FC_ItemData>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -15,7 +21,7 @@ public class FC_PickUpItem : MonoBehaviour
             {
                 if (item.title == FC_InventoryManager.instance.inventory[i].title && item.isStackable && FC_InventoryManager.instance.inventory.Count > 0)
                 {
-                    item.quantities += FC_InventoryManager.instance.inventory[i].quantities;
+                    item.quantities += data.quantities;
                     FC_InventoryManager.instance.inventory.Remove(FC_InventoryManager.instance.inventory[i]);
                     break;
                 }
