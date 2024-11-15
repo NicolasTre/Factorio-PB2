@@ -6,7 +6,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-1000)]
 public class FC_MenuLevelManager : MonoBehaviour
 {
-    private FC_TileConvoyerSystem convoyerSystem;
+    [SerializeField] private FC_TileConvoyerSystem convoyerSystem;
     
     [Header("Cam Settings")]
     [SerializeField] private CinemachineVirtualCamera _cam;
@@ -20,8 +20,6 @@ public class FC_MenuLevelManager : MonoBehaviour
     void Awake()
     {
         _cam.m_Lens.OrthographicSize = _lensOrtoSize;
-        convoyerSystem = GetComponent<FC_TileConvoyerSystem>();
-
         convoyers = new();
     }
 
