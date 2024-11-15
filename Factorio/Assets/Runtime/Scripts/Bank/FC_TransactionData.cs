@@ -7,9 +7,9 @@ public class FC_TransactionData
     public float amount { get; set; }
     public DateTime timestamp { get; set; }
     public Sprite image { get; set; }
-    public FC_ItemType type { get; set; }
+    public Type type { get; set; }
 
-    public FC_TransactionData(string name, float amount, DateTime timestamp, Sprite image, FC_ItemType type)
+    public FC_TransactionData(string name, float amount, DateTime timestamp, Sprite image, Type type)
     {
         this.name = name;
         this.amount = amount;
