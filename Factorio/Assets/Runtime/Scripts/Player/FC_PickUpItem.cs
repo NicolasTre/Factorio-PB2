@@ -29,6 +29,7 @@ public class FC_PickUpItem : MonoBehaviour
 
             FC_InventoryManager.instance.inventory.Add(item);
             Destroy(gameObject);
+            FC_InventoryManager.instance.RefreshInventory();
         }
     }
 }

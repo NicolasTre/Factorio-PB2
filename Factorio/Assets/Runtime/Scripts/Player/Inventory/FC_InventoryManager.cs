@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor.Purchasing;
 
 public class FC_InventoryManager : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class FC_InventoryManager : MonoBehaviour
     [SerializeField] private GameObject _prefabs;
     [SerializeField] private TextMeshProUGUI _Title, _descriptionObject;
     [SerializeField] private Image _iconDescription;
-    [SerializeField] private FC_FurnaceRessource _furnaceRessource;
+
+    public List<FC_FurnaceRessource> furnaceRessource;
+    public List<FC_SlitterMachine> slitterMachine;
 
 
     [Header("Description")]
@@ -49,45 +52,49 @@ public class FC_InventoryManager : MonoBehaviour
     {
         if (context.performed)
         {
-            RefreshInventory();
+            ToggleInventory();
         }
     }
 
-    private void RefreshInventory()// function for open inventory and create a slot and set item to slot
+    private void ToggleInventory()
     {
         if (!_inventoryPanel.activeInHierarchy)
         {
             _holderDescription.SetActive(false);
             _inventoryPanel.SetActive(true);
-
-            if (_holderSlot.transform.childCount > 0)
-            {
-                foreach (Transform item in _holderSlot.transform)
-                {
-                    Destroy(item.gameObject);   
-                }
-            }
-
-            for (int i = 0; i < _inventoryLenght; i++)
-            {
-                if (i <= inventory.Count - 1)
-                {
-                    SlotCreation(i);
-                    SetAmountText(true, i);
-                    
-                    Image img = slot.transform.Find("Icon").GetComponent<Image>();
-                    img.sprite = inventory[i].icon;
-                }
-                else if (i > inventory.Count - 1)
-                {
-                    SlotCreation(i);
-                    SetAmountText(false);
-                }
-            }
+            RefreshInventory();
         }
-        else if (_inventoryPanel.activeInHierarchy)
+        else
         {
             _inventoryPanel.SetActive(false);
+        }
+    }
+
+    public void RefreshInventory()// function for open inventory and create a slot and set item to slot
+    {
+        if (_holderSlot.transform.childCount > 0)
+        {
+            foreach (Transform item in _holderSlot.transform)
+            {
+                Destroy(item.gameObject);
+            }
+        }
+
+        for (int i = 0; i < _inventoryLenght; i++)
+        {
+            if (i <= inventory.Count - 1)
+            {
+                SlotCreation(i);
+                SetAmountText(true, i);
+
+                Image img = slot.transform.Find("Icon").GetComponent<Image>();
+                img.sprite = inventory[i].icon;
+            }
+            else if (i > inventory.Count - 1)
+            {
+                SlotCreation(i);
+                SetAmountText(false);
+            }
         }
     }
 
@@ -169,14 +176,43 @@ public class FC_InventoryManager : MonoBehaviour
     /// </summary>
     public void UseItem()
     {
-        if (_amountToUse >= 1 && GetItem(_currentSelectedSlot).title == _furnaceRessource._nameToInputItemPrefab)
+        if (_amountToUse >= 1)
         {
-            _furnaceRessource.AddInputItem(_amountToUse);
-            _furnaceRessource.StartProduction();
-            RemoveItemWhenUse();
-            RefreshInventory();
-            _valueToUse.text = _amountToUse + "/" + GetItem(_currentSelectedSlot).maxAmount;
+            FC_Iitem selectedItem = GetItem(_currentSelectedSlot);
+
+            if (selectedItem == null)
+            {
+                Debug.LogWarning("Aucun item sélectionné !");
+                return;
+            }
+
+            foreach (var furnace in furnaceRessource)
+            {
+                if (selectedItem.type == furnace._nameToInputItemPrefab)
+                {
+                    WhenUseItem(furnace);
+                    return; 
+                }
+            }
+
+            foreach (var slitter in slitterMachine)
+            {
+                if (selectedItem.type == slitter._nameToInputItemPrefab)
+                {
+                    WhenUseItem(slitter);
+                    return;
+                }
+            }
         }
+    }
+
+    public void WhenUseItem(FC_IMachine machine)
+    {
+        machine.AddInputItem(_amountToUse);
+        machine.StartProduction();
+        RemoveItemWhenUse();
+        ToggleInventory();
+        _valueToUse.text = _amountToUse + "/" + GetItem(_currentSelectedSlot).maxAmount;
     }
 
     public void RemoveItemWhenUse()
@@ -217,7 +253,7 @@ public class FC_InventoryManager : MonoBehaviour
                 GetItem(_currentSelectedSlot).quantities--;
             }
         }
-        RefreshInventory();
+        ToggleInventory();
         _valueToUse.text = _amountToUse + "/" + GetItem(_currentSelectedSlot).maxAmount;
     }
 

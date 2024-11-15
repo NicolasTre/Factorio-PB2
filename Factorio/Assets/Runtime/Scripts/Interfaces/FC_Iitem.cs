@@ -8,4 +8,5 @@ public interface FC_Iitem
     int quantities { get; set; }
     int maxAmount { get; set; }
     bool isStackable { get; set; }
+    Type type { get; set; }
 }

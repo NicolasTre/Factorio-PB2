@@ -1,22 +1,5 @@
 using UnityEngine;
 
-[System.Serializable]
-public enum Type
-{
-    None,
-    PainHautCoupeCuit,
-    PainBasCoupeCuit,
-    PainHautCoupeNonCuit,
-    PainBasCoupeNonCuit,
-    PainNonCoupe,
-    ViandeNonCuite,
-    ViandeCuite,
-    TomateCoupe,
-    TomateNonCoupe,
-    Convoyor,
-    ButtonMenu
-}
-
 [CreateAssetMenu(fileName = "Vierge", menuName = "Items/Vierge")]
 public class FC_ItemSo : ScriptableObject, FC_Iitem
 {
@@ -26,8 +9,8 @@ public class FC_ItemSo : ScriptableObject, FC_Iitem
     [SerializeField] protected int _quantities;
     [SerializeField] protected int _maxAmount;
     [SerializeField] protected bool _isStackable;
+    [SerializeField] protected Type _type;
 
-    public Type type;
 
 
     public string title { get => _title; set => _title = value; }
@@ -36,11 +19,5 @@ public class FC_ItemSo : ScriptableObject, FC_Iitem
     public int quantities { get => _quantities; set => _quantities = value; }
     public int maxAmount { get => _maxAmount; set => _maxAmount = value; }
     public bool isStackable { get => _isStackable; set => _isStackable = value; }
-    public FC_ItemSo()
-    {
-        if (type != Type.None)
-        {
-            title = type.ToString();
-        }
-    }
+    public Type type { get => _type; set => _type = value; }
 }
