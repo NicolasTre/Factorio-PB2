@@ -142,13 +142,11 @@ public class FC_InventoryManager : MonoBehaviour
 
         if (newSlot == null) // si il n'y a pas de prefab
         {
-            Debug.Log(newSlot);
             return;
         }
 
         if (GetItem(newSlot) == null)//s'il n'y as pas d'item dans le slot
         {
-            Debug.Log("ff");
             return;
         }
 

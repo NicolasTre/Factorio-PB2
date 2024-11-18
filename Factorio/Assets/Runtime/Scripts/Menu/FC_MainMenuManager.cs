@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class FC_MainMenuManager : MonoBehaviour
 {
-
+    [SerializeField] private FC_TileConvoyerSystem convoyerSystem;
     //[SerializeField] private string _sceneName; Si l'on veut load plusieurs scene plus tard dans le main menu
     [SerializeField] private Animator _animator;
     private string _TransitionCloseDoor = "CloseDoor";
@@ -16,8 +16,6 @@ public class FC_MainMenuManager : MonoBehaviour
     private string _TransitionCreditsOut = "CreditsFadeOut";
     private string _TransitionCreditsIn = "CreditsFadeIn";
 
-
-
     public void LeaveConfirm()
     {
         Application.Quit();
@@ -25,37 +23,42 @@ public class FC_MainMenuManager : MonoBehaviour
 
     public void OnPlayButton()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("NicoScene");
     }
 
     public void StartOption()
     {
+        convoyerSystem.SetBoolPlaceConvoyer(false);
         StartCoroutine(WaitForNextAnim(_TransitionCloseDoor, _TransitionComingSoon));
     }
     
     public void StartCredits()
     {
+        convoyerSystem.SetBoolPlaceConvoyer(false);
         StartCoroutine(WaitForNextAnim(_TransitionCloseDoor, _TransitionCreditsIn));
     }
 
     public void BackOptionButton()
     {
+        convoyerSystem.SetBoolPlaceConvoyer(true);
         StartCoroutine(WaitForNextAnim(_TransitionComingSoonOut, _TransitionOpenDoor));
     }
 
     public void OnButtonLeave()
     {
+        convoyerSystem.SetBoolPlaceConvoyer(false);
         StartCoroutine(WaitForNextAnim(_TransitionCloseDoor, _TransitionLeaveConfirmIn));
     }
 
     public void NotLeaveGame()
     {
+        convoyerSystem.SetBoolPlaceConvoyer(true);
         StartCoroutine(WaitForNextAnim(_TransitionLeaveConfirmOut, _TransitionOpenDoor));
     }
 
     public void BackCreditsButton()
     {
-
+        convoyerSystem.SetBoolPlaceConvoyer(true);
         StartCoroutine(WaitForNextAnim(_TransitionCreditsOut, _TransitionOpenDoor));
     }
 

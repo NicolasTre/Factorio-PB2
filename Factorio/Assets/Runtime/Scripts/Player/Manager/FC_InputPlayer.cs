@@ -21,20 +21,16 @@ public class FC_InputPlayer : MonoBehaviour
 
     public void RotateMachine(InputAction.CallbackContext context)
     {
-        Debug.Log($" input canRotate : {canRotate}");
         if (context.performed && canRotate)
         {
-            Debug.Log("input");
             OnRotateMachine?.Invoke();
         }
     }
 
     public void DestroyMachine(InputAction.CallbackContext context)
     {
-        Debug.Log($" input canRotate : {canRotate}");
         if (context.performed && canRotate)
         {
-            Debug.Log("input");
             OnRotateMachine?.Invoke();
         }
     }

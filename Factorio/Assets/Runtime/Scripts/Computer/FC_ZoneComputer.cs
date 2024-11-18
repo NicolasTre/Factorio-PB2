@@ -15,13 +15,11 @@ public class FC_ZoneComputer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("open Computer");
         anim.SetBool("isOpen", isOpen = true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        //Debug.Log("Close Computer");
         CloseComputer();
     }
 

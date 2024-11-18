@@ -40,7 +40,6 @@ public class FC_SlotItem : MonoBehaviour, IBeginDragHandler,IDragHandler,IDropHa
         for (int i = 0; i < _childrenRectTransform.Length; i++)
         {
             _firstPosition[i] = _childrenRectTransform[i].anchoredPosition;
-            Debug.Log(_firstPosition[i]);
         }
     }
 

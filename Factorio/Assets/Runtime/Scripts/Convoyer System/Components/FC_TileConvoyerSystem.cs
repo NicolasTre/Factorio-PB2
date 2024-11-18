@@ -36,7 +36,7 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     [Space(30)]
     [Header("Parameters")]
     [SerializeField] private bool canPlaceConvoyer;
-    private FC_ZoneComputer computer;
+    private FC_ZoneComputer? computer;
 
     [SerializeField] private float animationSpeed = 1f;
     public DIRECTION currentDirection { get; private set; }
@@ -128,7 +128,8 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     #region Actions
     private void CheckButtonButtonsPressed(Vector3 mousePosition)
     {
-        if (computer.isOpen) return;
+        if (computer)
+            if (computer.isOpen) return;
 
         if (Input.GetMouseButton(0))
         {
@@ -138,7 +139,6 @@ public class FC_TileConvoyerSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             ChangeDirection();
-            //Debug.Log($"Direction changée en: {currentDirection}");
         }
     }
 
@@ -176,7 +176,6 @@ public class FC_TileConvoyerSystem : MonoBehaviour
 
         placedTiles[tilePosition] = direction;
 
-        Debug.Log($"Tuile créée à la position {tilePosition} avec la direction {direction}");
     }
     #endregion
 
@@ -243,7 +242,6 @@ public class FC_TileConvoyerSystem : MonoBehaviour
 
         ///
         Vector3Int neighborTilePosition = GetNeighborTilePosition(tilePosition, currentDirection);
-        //Debug.Log($"Position de la tuile voisine: {neighborTilePosition}");
         ///
 
         HighlightTile(tilePosition);
@@ -251,7 +249,6 @@ public class FC_TileConvoyerSystem : MonoBehaviour
 
         Tile currentTile = tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]];
         tempTilemap.SetTile(tilePosition, currentTile);
-        //Debug.Log($"Grid Position: {tilePosition}");
     }
 
     private void UpdateConvoyerPosition(Vector3 position, Tile[] tileAnim)
@@ -289,7 +286,6 @@ public class FC_TileConvoyerSystem : MonoBehaviour
             return;
         }
 
-        //Debug.Log($"Grid LastPosition: {lastTilePosition}");
         tempTilemap.SetTile(lastTilePosition, null);
         lastTilePosition = tilePosition;
     }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class FC_Machines : MonoBehaviour
@@ -24,10 +23,8 @@ public class FC_Machines : MonoBehaviour
 
     protected virtual void Start()
     {
-        Debug.Log("nop");
         if (FC_InputPlayer.instance != null)
         {
-            Debug.Log("fff");
             FC_InputPlayer.instance.OnRotateMachine.AddListener(OnRotation);
         }
     }
@@ -76,7 +73,6 @@ public class FC_Machines : MonoBehaviour
     {
         FC_InputPlayer.instance.SetCanRotate(true);
         _canDoRotate = true;
-        Debug.Log($"etyiop : {FC_InputPlayer.instance.canRotate}");
     }
 
     protected virtual void OnMouseExit()
@@ -88,7 +84,6 @@ public class FC_Machines : MonoBehaviour
     public virtual void OnRotation()
     {
         if (!_canDoRotate) return;
-        Debug.Log("ActionRotate");
         _childMachineToRotate.transform.rotation *= Quaternion.Euler(_rotate);
 
         Vector3 eulerAngles = _childMachineToRotate.transform.eulerAngles;

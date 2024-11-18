@@ -53,7 +53,6 @@ public class FC_ItemMoverOnConvoyer : FC_ManagerItemOnConvoyer
     {
         Tilemap tilemap = convoyerSystem.convoyerTilemap;
         currentTilePos = tilemap.WorldToCell(transform.position);
-        //Debug.Log("Position de la cellule touchée: " + currentTilePos);
 
         if (!convoyerSystem.IsTileAvailable(currentTilePos)) { return; }
 
@@ -71,7 +70,6 @@ public class FC_ItemMoverOnConvoyer : FC_ManagerItemOnConvoyer
 
         ChangeTargetPosition(tilemap.CellToWorld(nextTilePos));
 
-        //Debug.Log("Movement Enable");
         timer = 0f;
         isMoving = true;
     }
@@ -99,7 +97,6 @@ public class FC_ItemMoverOnConvoyer : FC_ManagerItemOnConvoyer
             return false;
         }
 
-        //Debug.Log("Has Opposite Direction by the next tile");
         return true;
     }
     private bool HasAnotherItemInTheNextTile(Vector3Int nextTilePos) 
