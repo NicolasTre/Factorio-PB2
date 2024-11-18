@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
+
 
 public class FC_TileConvoyerSystem : MonoBehaviour
 {
@@ -20,7 +20,7 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     [Header("- Down Animations")]
     [SerializeField] private Tile[] tileAnimDownRight;
     [SerializeField] private Tile[] tileAnimDownLeft;
-    
+
     [Header("- Right Animations")]
     [SerializeField] private Tile[] tileAnimRightUp;
     [SerializeField] private Tile[] tileAnimRightDown;
@@ -35,29 +35,31 @@ public class FC_TileConvoyerSystem : MonoBehaviour
 
     [Space(30)]
     [Header("Parameters")]
-    public bool canPlaceConvoyer;
+    [SerializeField] private bool canPlaceConvoyer;
+    private FC_ZoneComputer computer;
 
     [SerializeField] private float animationSpeed = 1f;
     public DIRECTION currentDirection { get; private set; }
     [SerializeField] private Color highlightColor = Color.green;
-    
+
     public Tilemap convoyerTilemap { get; private set; }
     public Tilemap tempTilemap { get; private set; }
 
     private Vector3Int lastTilePosition;
-    
+
     private float timeAccumulator = 0f;
     public Dictionary<DIRECTION, Tile[]> tilesByDirection { get; private set; }
     public Dictionary<Vector3Int, DIRECTION> placedTiles { get; private set; }
-    public  Dictionary<DIRECTION, int> animationFramesByDirection   = new();
+    public Dictionary<DIRECTION, int> animationFramesByDirection = new();
     public Dictionary<DIRECTION, Vector3Int> directionOffsets { get; private set; }
     #endregion
 
     private void Awake()
     {
+        computer = FindFirstObjectByType<FC_ZoneComputer>();
         convoyerTilemap = GameObject.Find("ConvoyerTilemap").GetComponent<Tilemap>();
         tempTilemap = GameObject.Find("TempTilemap").GetComponent<Tilemap>();
-        
+
         tilesByDirection = new Dictionary<DIRECTION, Tile[]>
         {
             { DIRECTION.Up, tileAnimUp },
@@ -77,9 +79,9 @@ public class FC_TileConvoyerSystem : MonoBehaviour
             { DIRECTION.LeftUp, tileAnimLeftUp },
             { DIRECTION.LeftDown, tileAnimLeftDown }
         };
-        
+
         placedTiles = new();
-        
+
         directionOffsets = new Dictionary<DIRECTION, Vector3Int>
         {
             { DIRECTION.Up, Vector3Int.up },
@@ -126,7 +128,9 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     #region Actions
     private void CheckButtonButtonsPressed(Vector3 mousePosition)
     {
-        if (Input.GetMouseButtonDown(0))
+        if (computer.isOpen) return;
+
+        if (Input.GetMouseButton(0))
         {
             PlaceConvoyer(mousePosition, tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]]);
         }
@@ -141,7 +145,7 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     private void ChangeDirection()
     {
         currentDirection = (DIRECTION)(((int)currentDirection + 1) % System.Enum.GetValues(typeof(DIRECTION)).Length);
-       
+
         if (tilesByDirection[currentDirection].Length == 0)
         {
             ChangeDirection();
@@ -151,7 +155,7 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     public void CreateTile(DIRECTION direction, Vector3 position)
     {
         Vector3Int tilePosition = convoyerTilemap.WorldToCell(position);
-        
+
         if (convoyerTilemap.GetTile(tilePosition) != null)
         {
             Debug.LogWarning("Une tuile est déjà placée à cette position.");
@@ -192,17 +196,17 @@ public class FC_TileConvoyerSystem : MonoBehaviour
         {
             return direction;
         }
-        
+
         return DIRECTION.Right;
     }
 
     public bool IsTileAvailable(Vector3Int tilePosition)
     {
         Tile tile = convoyerTilemap.GetTile<Tile>(tilePosition);
-        
+
         return tile != null;
 
-//        return tile == null;
+        //        return tile == null;
     }
     #endregion
 
@@ -236,7 +240,7 @@ public class FC_TileConvoyerSystem : MonoBehaviour
         }
 
         Vector3Int tilePosition = tempTilemap.WorldToCell(position);
-        
+
         ///
         Vector3Int neighborTilePosition = GetNeighborTilePosition(tilePosition, currentDirection);
         //Debug.Log($"Position de la tuile voisine: {neighborTilePosition}");
@@ -276,7 +280,7 @@ public class FC_TileConvoyerSystem : MonoBehaviour
         }
     }
     #endregion
-    
+
     #region Placing
     private void ReplaceLastTile(Vector3Int tilePosition)
     {
@@ -292,7 +296,6 @@ public class FC_TileConvoyerSystem : MonoBehaviour
 
     private void PlaceConvoyer(Vector3 position, Tile tile)
     {
-
         Vector3Int tilePosition = convoyerTilemap.WorldToCell(position);
         Tile currentTile = convoyerTilemap.GetTile<Tile>(tilePosition);
 
@@ -304,12 +307,12 @@ public class FC_TileConvoyerSystem : MonoBehaviour
 
         ResetTileColor(tilePosition);
         convoyerTilemap.SetTile(tilePosition, tile);
-        
+
         placedTiles[tilePosition] = currentDirection;
     }
 
     private void PlaceConvoyer(Vector3 position, Tile[] tileAnim)
-    {        
+    {
         Tile currentTile = tilesByDirection[currentDirection][animationFramesByDirection[currentDirection]];
         PlaceConvoyer(position, currentTile);
 
@@ -327,5 +330,25 @@ public class FC_TileConvoyerSystem : MonoBehaviour
     {
         tempTilemap.SetColor(position, Color.white); //couleur d'origine
     }
+    #endregion
+
+    #region Getter/Setter
+    public void SetBoolPlaceConvoyer(bool value)
+    {
+        canPlaceConvoyer = value;
+
+        if (canPlaceConvoyer)
+        {
+            return;
+        }
+
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int tilePosition = tempTilemap.WorldToCell(mousePosition);
+
+        tempTilemap.SetTile(tilePosition, null);
+        ResetTileColor(tilePosition);
+    }
+
+    public bool GetBoolPlaceConvoyer () => canPlaceConvoyer;
     #endregion
 }
