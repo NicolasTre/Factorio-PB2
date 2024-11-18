@@ -33,6 +33,7 @@ public class FC_ItemMoverOnConvoyer : FC_ManagerItemOnConvoyer
         offsetToPutItInTheMiddleCaseByTileMap = new Vector3(0.5f, 0.5f, 0);
         
         collider = GetComponent<CircleCollider2D>();
+        convoyerSystem = FindObjectOfType<FC_TileConvoyerSystem>();
     }
 
     protected override void UpdateItem()

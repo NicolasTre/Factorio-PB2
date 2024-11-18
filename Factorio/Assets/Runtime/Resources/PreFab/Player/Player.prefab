@@ -3378,6 +3378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 12
   _mainCinemachineCamera: {fileID: 2797735546155265062}
+  _zoom: 10
 --- !u!114 &4848735842911400623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3408,6 +3409,8 @@ MonoBehaviour:
   _Title: {fileID: 9113637655209100182}
   _descriptionObject: {fileID: 2931230297961279215}
   _iconDescription: {fileID: 1477795520092435015}
+  furnaceRessource: []
+  slitterMachine: []
   _holderDescription: {fileID: 2156259473793265162}
   _valueToUse: {fileID: 993399391921868748}
   _plusButton: {fileID: 1096350378374823800}

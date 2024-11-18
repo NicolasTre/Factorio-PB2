@@ -9,8 +9,11 @@ EditorBuildSettings:
     path: Assets/Runtime/Scenes/Main Menu.unity
     guid: 156ca49a7f187fd478c5543520399226
   - enabled: 1
-    path: Assets/Runtime/Scenes/Game.unity
-    guid: e31bdab07daf14b42a2a1a1134268b4c
+    path: Assets/Runtime/Scenes/Nicolas/NicoScene.unity
+    guid: 29a1a1667d1c7c4438bc87b2f700c24c
+  - enabled: 1
+    path: Assets/Runtime/Scenes/Dorian/Dodo_TestComputer.unity
+    guid: b6d9287f78155e64db0954be14cf3e4f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

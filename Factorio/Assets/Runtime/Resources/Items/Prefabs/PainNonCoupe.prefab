@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2194903169426874887}
   - component: {fileID: 6779960186090126615}
   - component: {fileID: 2454719222204653633}
+  - component: {fileID: -8750684449500728921}
   m_Layer: 0
   m_Name: PainNonCoupe
   m_TagString: Untagged
@@ -180,3 +181,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quantities: 1
+--- !u!114 &-8750684449500728921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415778240221332954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d463899521642640990788cc94947e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  convoyerSystem: {fileID: 0}
+  durationTravelling: 1.65
+  convoyerTag: 1

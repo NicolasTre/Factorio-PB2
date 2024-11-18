@@ -126,7 +126,6 @@ MonoBehaviour:
   _itemPrefab: {fileID: 1415778240221332954, guid: 6e05e83f2cf390047a4bb075f0fdd726, type: 3}
   _outputPosition: {fileID: 1967344121281826885}
   _productionSlider: {fileID: 3277042535783202479}
-  _exitCollider: {fileID: 8296040321475438073}
 --- !u!61 &3371312056371138983
 BoxCollider2D:
   m_ObjectHideFlags: 0
